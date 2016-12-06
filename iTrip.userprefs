@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{226D62AD-5738-4846-90C3-0ADC7FFB3215}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MainForm.cs">
+    <Files>
+      <File FileName="MainForm.cs" Line="38" Column="40" />
+      <File FileName="iTrip.Gtk2/Program.cs" Line="1" Column="1" />
+      <File FileName="Model.cs" Line="16" Column="33" />
+      <File FileName="iTrip.Mac/Program.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.iTrip.Mac PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
