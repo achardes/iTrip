@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Maps.MapControl.WPF;
+//using Microsoft.Maps.MapControl.WPF;
 using System.Windows.Input;
 
 namespace RoadTripManager
@@ -21,10 +21,10 @@ namespace RoadTripManager
             get { return _filteredJourneys; }
             set { _filteredJourneys = value; OnlyNotifyPropertyChanged(nameof(FilteredJourneys)); }
         }
-        public Visibility DetailsPaneVisibility
-        {
-            get { return (SelectedJourney != null) ? Visibility.Visible : Visibility.Hidden; }
-        }
+        //public Visibility DetailsPaneVisibility
+        //{
+        //    get { return (SelectedJourney != null) ? Visibility.Visible : Visibility.Hidden; }
+        //}
 
         private Journey _selectedJourney;
         public Journey SelectedJourney
@@ -40,9 +40,9 @@ namespace RoadTripManager
                 if (_selectedJourney != null) { _selectedJourney.IsSelected = true; }
 
                 NotifyPropertyChanged(nameof(SelectedJourney));
-                NotifyPropertyChanged(nameof(DetailsPaneVisibility));
+                //NotifyPropertyChanged(nameof(DetailsPaneVisibility));
 
-                _selectedJourney.TraceWaypoints(Map);
+                //_selectedJourney.TraceWaypoints(Map);
             }
         }
 
@@ -60,7 +60,7 @@ namespace RoadTripManager
             set { _metricManager = value; OnlyNotifyPropertyChanged(nameof(MetricManager)); }
         }
 
-        public Map Map { get; set; }
+        //public Map Map { get; set; }
 
         private int _tabControlSelectedIndex;
         public int TabControlSelectedIndex
@@ -87,59 +87,59 @@ namespace RoadTripManager
             MetricManager.BuildMetrics(FilteredJourneys.ToList());
         }
 
-        RelayCommand _addCommand;
-        public ICommand AddCommand
-        {
-            get
-            {
-                if (_addCommand == null)
-                {
-                    _addCommand = new RelayCommand(param => this.Add(),
-                        param => true);
-                }
-                return _addCommand;
-            }
-        }
+        //RelayCommand _addCommand;
+        //public ICommand AddCommand
+        //{
+        //    get
+        //    {
+        //        if (_addCommand == null)
+        //        {
+        //            _addCommand = new RelayCommand(param => this.Add(),
+        //                param => true);
+        //        }
+        //        return _addCommand;
+        //    }
+        //}
 
-        RelayCommand _saveCommand;
-        public ICommand SaveCommand
-        {
-            get
-            {
-                if (_saveCommand == null)
-                {
-                    _saveCommand = new RelayCommand(param => Save(),
-                        param => CanSave());
-                }
-                return _saveCommand;
-            }
-        }
+        //RelayCommand _saveCommand;
+        //public ICommand SaveCommand
+        //{
+        //    get
+        //    {
+        //        if (_saveCommand == null)
+        //        {
+        //            _saveCommand = new RelayCommand(param => Save(),
+        //                param => CanSave());
+        //        }
+        //        return _saveCommand;
+        //    }
+        //}
 
-        RelayCommand _applyFilterCommand;
-        public ICommand ApplyFilterCommand
-        {
-            get
-            {
-                if (_applyFilterCommand == null)
-                {
-                    _applyFilterCommand = new RelayCommand(param => ApplyFilter(), param => true);
-                }
-                return _applyFilterCommand;
-            }
-        }
+        //RelayCommand _applyFilterCommand;
+        //public ICommand ApplyFilterCommand
+        //{
+        //    get
+        //    {
+        //        if (_applyFilterCommand == null)
+        //        {
+        //            _applyFilterCommand = new RelayCommand(param => ApplyFilter(), param => true);
+        //        }
+        //        return _applyFilterCommand;
+        //    }
+        //}
 
-        RelayCommand _resetFilterCommand;
-        public ICommand ResetFilterCommand
-        {
-            get
-            {
-                if (_resetFilterCommand == null)
-                {
-                    _resetFilterCommand = new RelayCommand(param => ResetFilter(), param => true);
-                }
-                return _resetFilterCommand;
-            }
-        }
+        //RelayCommand _resetFilterCommand;
+        //public ICommand ResetFilterCommand
+        //{
+        //    get
+        //    {
+        //        if (_resetFilterCommand == null)
+        //        {
+        //            _resetFilterCommand = new RelayCommand(param => ResetFilter(), param => true);
+        //        }
+        //        return _resetFilterCommand;
+        //    }
+        //}
 
         private bool CanSave()
         {

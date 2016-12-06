@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iTrip.csproj">
-      <Project>{444EAF83-AF9D-4FBC-B197-75D3E45E3054}</Project>
+      <Project>{DFC55E76-957F-4141-AEA2-A491E41E0EE7}</Project>
       <Name>iTrip</Name>
     </ProjectReference>
   </ItemGroup>

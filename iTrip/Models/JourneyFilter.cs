@@ -37,18 +37,18 @@ namespace RoadTripManager
             set { _isFilterOpen = value; OnlyNotifyPropertyChanged(nameof(IsFilterOpen)); }
         }
 
-        RelayCommand _openFilterCommand;
-        public ICommand OpenFilterCommand
-        {
-            get
-            {
-                if (_openFilterCommand == null)
-                {
-                    _openFilterCommand = new RelayCommand(param => OpenFilter(), param => true);
-                }
-                return _openFilterCommand;
-            }
-        }
+        //RelayCommand _openFilterCommand;
+        //public ICommand OpenFilterCommand
+        //{
+        //    get
+        //    {
+        //        if (_openFilterCommand == null)
+        //        {
+        //            _openFilterCommand = new RelayCommand(param => OpenFilter(), param => true);
+        //        }
+        //        return _openFilterCommand;
+        //    }
+        //}
 
         private void OpenFilter()
         {

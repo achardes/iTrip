@@ -1,4 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+﻿//using Microsoft.Maps.MapControl.WPF;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace RoadTripManager 
 {
@@ -40,12 +39,12 @@ namespace RoadTripManager
 
         public ObservableCollection<Spending> Spendings { get; set; }
 
-        private LocationCollection _locationCollection;
-        public LocationCollection LocationCollection
-        {
-            get { return _locationCollection; }
-            set { _locationCollection = value; NotifyPropertyChanged(nameof(LocationCollection)); }
-        }
+        //private LocationCollection _locationCollection;
+        //public LocationCollection LocationCollection
+        //{
+        //    get { return _locationCollection; }
+        //    set { _locationCollection = value; NotifyPropertyChanged(nameof(LocationCollection)); }
+        //}
 
         private bool _isSelected;
         public bool IsSelected
@@ -103,18 +102,18 @@ namespace RoadTripManager
             collection.DeleteOneAsync(x => x.Id == Id);
         }
 
-        RelayCommand _addEventCommand;
-        public ICommand AddEventCommand
-        {
-            get
-            {
-                if (_addEventCommand == null)
-                {
-                    _addEventCommand = new RelayCommand(param => AddEvent(), param => true);
-                }
-                return _addEventCommand;
-            }
-        }
+        //RelayCommand _addEventCommand;
+        //public ICommand AddEventCommand
+        //{
+        //    get
+        //    {
+        //        if (_addEventCommand == null)
+        //        {
+        //            _addEventCommand = new RelayCommand(param => AddEvent(), param => true);
+        //        }
+        //        return _addEventCommand;
+        //    }
+        //}
 
         public void AddEvent()
         {
@@ -124,18 +123,18 @@ namespace RoadTripManager
             Events.Add(newEvent);
         }
 
-        RelayCommand _addSpendingCommand;
-        public ICommand AddSpendingCommand
-        {
-            get
-            {
-                if (_addSpendingCommand == null)
-                {
-                    _addSpendingCommand = new RelayCommand(param => AddSpending(), param => true);
-                }
-                return _addSpendingCommand;
-            }
-        }
+        //RelayCommand _addSpendingCommand;
+        //public ICommand AddSpendingCommand
+        //{
+        //    get
+        //    {
+        //        if (_addSpendingCommand == null)
+        //        {
+        //            _addSpendingCommand = new RelayCommand(param => AddSpending(), param => true);
+        //        }
+        //        return _addSpendingCommand;
+        //    }
+        //}
 
         public void AddSpending()
         {
@@ -154,60 +153,60 @@ namespace RoadTripManager
         }
 
 
-        RelayCommand _buildWaypointsCommand;
-        public ICommand BuildWaypointsCommand
-        {
-            get
-            {
-                if (_buildWaypointsCommand == null)
-                {
-                    _buildWaypointsCommand = new RelayCommand(param => BuildWaypoints(), param => true);
-                }
-                return _buildWaypointsCommand;
-            }
-        }
+        //RelayCommand _buildWaypointsCommand;
+        //public ICommand BuildWaypointsCommand
+        //{
+        //    get
+        //    {
+        //        if (_buildWaypointsCommand == null)
+        //        {
+        //            _buildWaypointsCommand = new RelayCommand(param => BuildWaypoints(), param => true);
+        //        }
+        //        return _buildWaypointsCommand;
+        //    }
+        //}
 
-        public void BuildWaypoints()
-        {
-            Journey previousJourney = (Parent == null)? null : (Parent as JourneyManager).GetPreviousJourney(this);
+        //public void BuildWaypoints()
+        //{
+        //    Journey previousJourney = (Parent == null)? null : (Parent as JourneyManager).GetPreviousJourney(this);
 
-            List<Location> locations = new List<Location>();
+        //    List<Location> locations = new List<Location>();
 
-            if (previousJourney != null)
-            {
-                if (previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Any())
-                {
-                    locations.Add(previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Last().Location);
-                }
-                else if (previousJourney.Bivouac.Location.HasValidCoordinates)
-                {
-                    locations.Add(previousJourney.Bivouac.Location);
-                }
-            }
+        //    if (previousJourney != null)
+        //    {
+        //        if (previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Any())
+        //        {
+        //            locations.Add(previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Last().Location);
+        //        }
+        //        else if (previousJourney.Bivouac.Location.HasValidCoordinates)
+        //        {
+        //            locations.Add(previousJourney.Bivouac.Location);
+        //        }
+        //    }
 
-            locations.AddRange(Events.Where(x => x.Location.HasValidCoordinates).Select(x => x.Location));
+        //    locations.AddRange(Events.Where(x => x.Location.HasValidCoordinates).Select(x => x.Location));
 
-            if (Bivouac.Location.HasValidCoordinates)
-            {
-                locations.Add(Bivouac.Location);
-            }
+        //    if (Bivouac.Location.HasValidCoordinates)
+        //    {
+        //        locations.Add(Bivouac.Location);
+        //    }
 
-            LocationCollection = MapHelper.CallBingRestApi(locations);
-        }
+        //    LocationCollection = MapHelper.CallBingRestApi(locations);
+        //}
 
-        public void TraceWaypoints(Map map)
-        {
-            if (map == null) return;
+        //public void TraceWaypoints(Map map)
+        //{
+        //    if (map == null) return;
 
-            MapPolyline routeLine = new MapPolyline()
-            {
-                Locations = LocationCollection,
-                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00B3FD")),
-                StrokeThickness = 5
-            };
+        //    MapPolyline routeLine = new MapPolyline()
+        //    {
+        //        Locations = LocationCollection,
+        //        Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00B3FD")),
+        //        StrokeThickness = 5
+        //    };
 
-            map.Children.Add(routeLine);
-            map.SetView(LocationCollection, new Thickness(25), 0);
-        }
+        //    map.Children.Add(routeLine);
+        //    map.SetView(LocationCollection, new Thickness(25), 0);
+        //}
     }
 }

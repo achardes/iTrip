@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace RoadTripManager
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand //: ICommand
     {
         #region Fields
 
@@ -42,11 +42,11 @@ namespace RoadTripManager
             return _canExecute == null ? true : _canExecute(parameter);
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        //public event EventHandler CanExecuteChanged
+        //{
+        //    add { CommandManager.RequerySuggested += value; }
+        //    remove { CommandManager.RequerySuggested -= value; }
+        //}
 
         public void Execute(object parameter)
         {

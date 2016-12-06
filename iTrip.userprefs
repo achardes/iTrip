@@ -1,10 +1,16 @@
 ﻿<Properties StartupConfiguration="{226D62AD-5738-4846-90C3-0ADC7FFB3215}|Default">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip/Models/JourneyManager.cs">
     <Files>
-      <File FileName="MainForm.cs" Line="12" Column="26" />
-      <File FileName="iTrip.Gtk2/Program.cs" Line="1" Column="1" />
-      <File FileName="Model.cs" Line="16" Column="33" />
       <File FileName="iTrip.Mac/Program.cs" Line="1" Column="1" />
+      <File FileName="iTrip/MainForm.cs" Line="2" Column="7" />
+      <File FileName="iTrip/Helpers/DataContext.cs" Line="3" Column="7" />
+      <File FileName="iTrip/Helpers/MapHelper.cs" Line="5" Column="19" />
+      <File FileName="iTrip/Helpers/MessageHelper.cs" Line="9" Column="1" />
+      <File FileName="iTrip/Models/Journey.cs" Line="126" Column="1" />
+      <File FileName="iTrip/Models/JourneyManager.cs" Line="90" Column="8" />
+      <File FileName="iTrip/Helpers/KlmHelper.cs" Line="52" Column="30" />
+      <File FileName="iTrip/Helpers/RelayCommand.cs" Line="17" Column="9" />
+      <File FileName="iTrip/Models/JourneyFilter.cs" Line="40" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
