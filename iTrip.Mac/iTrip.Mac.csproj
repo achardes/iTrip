@@ -8,8 +8,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>iTrip.Mac</RootNamespace>
     <AssemblyName>iTrip Mac</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,6 +27,8 @@
     <UseSGen>false</UseSGen>
     <PlatformTarget>x86</PlatformTarget>
     <LinkMode>None</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +44,8 @@
     <UseSGen>false</UseSGen>
     <LinkMode>SdkOnly</LinkMode>
     <PlatformTarget>x86</PlatformTarget>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,10 +53,9 @@
     <Reference Include="Eto">
       <HintPath>..\packages\Eto.Forms.2.3.0\lib\net45\Eto.dll</HintPath>
     </Reference>
-    <Reference Include="Eto.Mac">
-      <HintPath>..\packages\Eto.Platform.Mac.2.3.0\lib\net45\Eto.Mac.dll</HintPath>
+    <Reference Include="Eto.XamMac2">
+      <HintPath>..\packages\Eto.Platform.XamMac2.2.3.0\lib\net45\Eto.XamMac2.dll</HintPath>
     </Reference>
-    <Reference Include="XamMac" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iTrip.csproj">
@@ -66,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="ITripIcon.icns" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

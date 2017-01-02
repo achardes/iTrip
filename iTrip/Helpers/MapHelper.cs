@@ -1,4 +1,4 @@
-﻿//using Microsoft.Maps.MapControl.WPF;
+//using Microsoft.Maps.MapControl.WPF;
 //using Newtonsoft.Json;
 //using System;
 //using System.Collections.Generic;
@@ -11,7 +11,7 @@
 //using System.Windows;
 //using System.Windows.Media;
 
-//namespace RoadTripManager
+//namespace iTrip
 //{
 //    public static class MapHelper
 //    {

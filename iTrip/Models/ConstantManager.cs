@@ -1,13 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Eto.Forms;
 
-namespace RoadTripManager
+namespace iTrip
 {
     public class ConstantManager
     {
+        private static ConstantManager instance;
+
+        public static ConstantManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ConstantManager();
+                }
+                return instance;
+            }
+        }
+
+        public List<ListItem> Notes { get; set; }
         public List<string> BivouacTags { get; set; }
         public List<string> SpendingTypes { get; set; }
         public List<string> Countries { get; set; }
@@ -17,9 +33,18 @@ namespace RoadTripManager
         public List<string> WeatherKinds { get; set; }
         public string BingMapKey { get; set; }
 
-        public ConstantManager()
+        private ConstantManager()
         {
             BingMapKey = "At4WOXTTxj78u295HiwxdaF4v0_v73pHFve-hdktYdWAVdCI9M7bUHjWyVCkoDTE";
+
+            Notes = new List<ListItem>()
+            {
+                new ListItem() { Key = "1", Text = "★" },
+                new ListItem() { Key = "2", Text = "★★" },
+                new ListItem() { Key = "3", Text = "★★★" },
+                new ListItem() { Key = "4", Text = "★★★★" },
+                new ListItem() { Key = "5", Text = "★★★★★" },
+            };
 
             BivouacTags = new List<string>()
             {

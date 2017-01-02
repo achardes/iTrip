@@ -1,4 +1,4 @@
-﻿//using Microsoft.Maps.MapControl.WPF;
+//using Microsoft.Maps.MapControl.WPF;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -8,75 +8,94 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System;
+using Eto.Forms;
+using System.Runtime.CompilerServices;
 
-namespace RoadTripManager 
+namespace iTrip 
 {
     [BsonIgnoreExtraElements]
-    public class Journey : AObservableObject, ISupportInitialize
+    public class Journey : INotifyPropertyChanged, ISupportInitialize, IEquatable<Journey>
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [BsonIgnore]
+        private Journey Initial { get; set; }
+
         [BsonId]
         public ObjectId Id { get; set; }
-
-        public Period Period { get; set; }
-
+        public DateTime FromDateTime { get; set; }
+        public DateTime ToDateTime { get; set; }
+        public int Duration { get { return (ToDateTime.Date - FromDateTime.Date).Days + 1; } }
+        public string Weather { get; set; }
+        public string Note { get; set; }
         public Bivouac Bivouac { get; set; }
+        public ItemObservableCollection<Event> Events { get; set; }
+        public ItemObservableCollection<Spending> Spendings { get; set; }
 
-        public ObservableCollection<Event> Events { get; set; }
+        public Journey(DateTime fromDateTime, DateTime toDateTime)
+        {
+            FromDateTime = fromDateTime.Date;
+            ToDateTime = toDateTime.Date;
+            Weather = ConstantManager.Instance.WeatherKinds.First();
+            Note = "1";
 
-        private Event _selectedEvent;
-        public Event SelectedEvent
+            Bivouac = new Bivouac();
+            Events = new ItemObservableCollection<Event>();
+            Spendings = new ItemObservableCollection<Spending>();
+
+            EndInit();
+        }
+
+        public Journey(Journey other)
+        {
+            FromDateTime = other.FromDateTime;
+            ToDateTime = other.ToDateTime;
+            Weather = other.Weather;
+            Note = other.Note;
+
+            Events = other.Events.Duplicate();
+            Spendings = other.Spendings.Duplicate();
+        }
+
+        public bool Equals(Journey other)
+        {
+            if (FromDateTime != other.FromDateTime) { return false; }
+            if (ToDateTime != other.ToDateTime) { return false; }
+            if (Weather != other.Weather) { return false; }
+            if (Note != other.Note) { return false; }
+            if (Bivouac.HasBeenChanged) { return false; }
+
+            if (Events.Count != other.Events.Count) { return false; }
+            if (Spendings.Count != other.Spendings.Count) { return false; }
+
+            if (Events.ToList().Exists(x => x.HasBeenChanged)) { return false; }
+            if (Spendings.ToList().Exists(x => x.HasBeenChanged)) { return false; }
+
+            return true;
+        }
+
+        [BsonIgnore]
+        public bool HasBeenChanged { get { return !this.Equals(Initial); } }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) { handler(this, new PropertyChangedEventArgs(propertyName)); }
+        }
+
+        public string DisplayName
         {
             get
             {
-                return _selectedEvent;
-            }
-            set
-            {
-                _selectedEvent = value;
-                OnlyNotifyPropertyChanged(nameof(SelectedEvent));
+                if (Duration > 1) { return "Journey from " + FromDateTime.ToShortDateString() + " to " + ToDateTime.ToShortDateString(); }
+                return "Journey of " + FromDateTime.ToShortDateString();
             }
         }
 
-        public ObservableCollection<Spending> Spendings { get; set; }
-
-        //private LocationCollection _locationCollection;
-        //public LocationCollection LocationCollection
-        //{
-        //    get { return _locationCollection; }
-        //    set { _locationCollection = value; NotifyPropertyChanged(nameof(LocationCollection)); }
-        //}
-
-        private bool _isSelected;
-        public bool IsSelected
+        public string ShortDisplayName
         {
-            get { return _isSelected; }
-            set { _isSelected = value; OnlyNotifyPropertyChanged(nameof(IsSelected)); }
-        }
-
-        private string _weather;
-        public string Weather
-        {
-            get { return _weather; }
-            set { _weather = value; NotifyPropertyChanged(nameof(Weather)); }
-        }
-
-        private string _note;
-        public string Note
-        {
-            get { return _note; }
-            set { _note = value; NotifyPropertyChanged(nameof(Note)); }
-        }
-
-        public Journey()
-        {
-            Period = new Period(this);
-            Bivouac = new Bivouac(this);
-            Events = new ObservableCollection<Event>();
-            Spendings = new ObservableCollection<Spending>();
-
-            ConstantManager constantManager = new ConstantManager();
-            Weather = constantManager.WeatherKinds.First();
-            Note = "Default";
+            get { return (HasBeenChanged? "*" : "") + FromDateTime.ToString("yy/MM/dd") + " (" + Duration + " day" + ((Duration > 1) ? "s" : "") + ")"; }
         }
 
         public async void Save()
@@ -87,11 +106,12 @@ namespace RoadTripManager
             if (Id == ObjectId.Empty) { await collection.InsertOneAsync(this); }
             else { await collection.ReplaceOneAsync<Journey>(x => x.Id == Id, this); }
 
-            HasBeenChanged = false;
-            Bivouac.HasBeenChanged = false;
-            Period.HasBeenChanged = false;
-            Events.ToList().ForEach(x => x.HasBeenChanged = false);
-            Spendings.ToList().ForEach(x => x.HasBeenChanged = false);
+            Initial = new Journey(this);
+            Bivouac.EndInit();
+            Events.ToList().ForEach(x => x.EndInit());
+            Spendings.ToList().ForEach(x => x.EndInit());
+
+            OnPropertyChanged("HasBeenChanged");
         }
 
         public void Delete()
@@ -102,111 +122,15 @@ namespace RoadTripManager
             collection.DeleteOneAsync(x => x.Id == Id);
         }
 
-        //RelayCommand _addEventCommand;
-        //public ICommand AddEventCommand
-        //{
-        //    get
-        //    {
-        //        if (_addEventCommand == null)
-        //        {
-        //            _addEventCommand = new RelayCommand(param => AddEvent(), param => true);
-        //        }
-        //        return _addEventCommand;
-        //    }
-        //}
-
-        public void AddEvent()
-        {
-            Event newEvent = new Event(this);
-            newEvent.Location.City = Bivouac.Location.City;
-            newEvent.Location.Country = Bivouac.Location.Country;
-            Events.Add(newEvent);
-        }
-
-        //RelayCommand _addSpendingCommand;
-        //public ICommand AddSpendingCommand
-        //{
-        //    get
-        //    {
-        //        if (_addSpendingCommand == null)
-        //        {
-        //            _addSpendingCommand = new RelayCommand(param => AddSpending(), param => true);
-        //        }
-        //        return _addSpendingCommand;
-        //    }
-        //}
-
-        public void AddSpending()
-        {
-            Spendings.Add(new Spending(this));
-        }
-
         public void BeginInit() { }
 
         public void EndInit()
         {
-            IsSelected = false;
-            Period.Parent = this;
-            Bivouac.Parent = this;
-            Events.ToList().ForEach(x => x.Parent = this);
-            Spendings.ToList().ForEach(x => x.Parent = this);
+            Events.CollectionChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            Events.ItemPropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            Spendings.ItemPropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            Bivouac.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            Initial = new Journey(this);
         }
-
-
-        //RelayCommand _buildWaypointsCommand;
-        //public ICommand BuildWaypointsCommand
-        //{
-        //    get
-        //    {
-        //        if (_buildWaypointsCommand == null)
-        //        {
-        //            _buildWaypointsCommand = new RelayCommand(param => BuildWaypoints(), param => true);
-        //        }
-        //        return _buildWaypointsCommand;
-        //    }
-        //}
-
-        //public void BuildWaypoints()
-        //{
-        //    Journey previousJourney = (Parent == null)? null : (Parent as JourneyManager).GetPreviousJourney(this);
-
-        //    List<Location> locations = new List<Location>();
-
-        //    if (previousJourney != null)
-        //    {
-        //        if (previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Any())
-        //        {
-        //            locations.Add(previousJourney.Events.Where(x => x.Location.HasValidCoordinates).Last().Location);
-        //        }
-        //        else if (previousJourney.Bivouac.Location.HasValidCoordinates)
-        //        {
-        //            locations.Add(previousJourney.Bivouac.Location);
-        //        }
-        //    }
-
-        //    locations.AddRange(Events.Where(x => x.Location.HasValidCoordinates).Select(x => x.Location));
-
-        //    if (Bivouac.Location.HasValidCoordinates)
-        //    {
-        //        locations.Add(Bivouac.Location);
-        //    }
-
-        //    LocationCollection = MapHelper.CallBingRestApi(locations);
-        //}
-
-        //public void TraceWaypoints(Map map)
-        //{
-        //    if (map == null) return;
-
-        //    MapPolyline routeLine = new MapPolyline()
-        //    {
-        //        Locations = LocationCollection,
-        //        Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00B3FD")),
-        //        StrokeThickness = 5
-        //    };
-
-        //    map.Children.Add(routeLine);
-        //    map.SetView(LocationCollection, new Thickness(25), 0);
-        //}
     }
 }

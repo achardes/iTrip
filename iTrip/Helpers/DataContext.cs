@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
@@ -6,17 +6,31 @@ using System.Linq;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
 
-namespace RoadTripManager
+namespace iTrip
 {
     public static class DataContext
     {
-        public static string DatabaseName = "roadTripManager";
+        public static string DatabaseName = "iTrip";
 
         public static IMongoDatabase GetMongoDatabase(string databaseName)
         {
             string MongoDbServer = "mongodb://localhost:27017";
 
-            IMongoClient client = new MongoClient(MongoDbServer);
+            IMongoClient client = null;
+
+            try
+            {
+                 client = new MongoClient(MongoDbServer);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.Write("plop");
+            }
+
+
+
+
             IMongoDatabase database = client.GetDatabase(databaseName);
 
             var conventionPack = new ConventionPack();

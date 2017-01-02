@@ -1,51 +1,63 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace RoadTripManager
+namespace iTrip
 {
-    public class Spending : AObservableObject
+    public class Spending : INotifyPropertyChanged, IEquatable<Spending>, ISupportInitialize
     {
-        private string _type;
-        public string Type
-        {
-            get { return _type; }
-            set { _type = value; NotifyPropertyChanged(nameof(Type)); }
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private double _quantity;
-        public double Quantity
-        {
-            get { return _quantity; }
-            set { _quantity = value; NotifyPropertyChanged(nameof(Quantity)); }
-        }
+        [BsonIgnore]
+        private Spending Initial { get; set; }
 
-        private double _price;
-        public double Price
-        {
-            get { return _price; }
-            set { _price = value; NotifyPropertyChanged(nameof(Price)); }
-        }
-
-        private string _comments;
-        public string Comments
-        {
-            get { return _comments; }
-            set { _comments = value; NotifyPropertyChanged(nameof(Comments)); }
-        }
+        public string Type { get; set; }
+        public double Quantity { get; set; }
+        public double Price { get; set; }
+        public string Comments { get; set; }
  
-        public Spending(AObservableObject parent)
+        public Spending()
         {
-            Parent = parent;
-            ConstantManager constantManager = new ConstantManager();
-            Type = constantManager.BivouacTypes.First();
+            Type = ConstantManager.Instance.BivouacTypes.First();
+            Quantity = 0;
+            Price = 0;
+            Comments = string.Empty;
+
+            EndInit();
         }
 
-        public string TopType
+        public Spending(Spending other)
         {
-            get { return (string.IsNullOrWhiteSpace(Type)) ? "" : Type.Split(':').First().Trim(); }
+            Type = other.Type;
+            Quantity = other.Quantity;
+            Price = other.Price;
+            Comments = other.Comments;
         }
+
+        public bool Equals(Spending other)
+        {
+            if (Type != other.Type) { return false; }
+            if (Quantity != other.Quantity) { return false; }
+            if (Price != other.Price) { return false; }
+            if (Comments != other.Comments) { return false; }
+
+            return true;
+        }
+
+        public void BeginInit()
+        {
+        }
+
+        public void EndInit()
+        {
+            Initial = new Spending(this);
+        }
+
+        [BsonIgnore]
+        public bool HasBeenChanged { get { return !this.Equals(Initial); } }
     }
 }

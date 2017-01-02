@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,79 +6,110 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoadTripManager
+namespace iTrip
 {
     [BsonIgnoreExtraElements]
-    public class Event : AObservableObject, ISupportInitialize
+    public class Event : INotifyPropertyChanged, IEquatable<Event>, ISupportInitialize
     {
-        private string _name;
-        public string Name
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [BsonIgnore]
+        private Event Initial { get; set; }
+
+        public int Order { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Price { get; set; }
+        public string Note { get; set; }
+        public string Duration { get; set; }
+        public string Comments { get; set; }
+
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Elevation { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+
+        public Event(int order)
         {
-            get { return _name; }
-            set { _name = value; NotifyPropertyChanged(nameof(Name)); }
+            Order = order;
+            Name = "New Event";
+            Duration = "0";
+            Price = "0";
+            Comments = "";
+            Type = ConstantManager.Instance.BivouacTypes.First();
+            Note = "2";
+
+            Longitude = 0;
+            Latitude = 0;
+            Elevation = 0;
+            Address = "";
+            City = "";
+            Country = ConstantManager.Instance.Countries.First();
+
+            EndInit();
         }
 
-        private string _type;
-        public string Type
+        public Event(Event other)
         {
-            get { return _type; }
-            set { _type = value; NotifyPropertyChanged(nameof(Type)); }
+            Order = other.Order;
+            Name = other.Name;
+            Duration = other.Duration;
+            Price = other.Price;
+            Comments = other.Comments;
+            Type = other.Type;
+            Note = other.Note;
+
+            Longitude = other.Longitude;
+            Latitude = other.Latitude;
+            Elevation = other.Elevation;
+            Address = other.Address;
+            City = other.City;
+            Country = other.Country;
         }
 
-        private double _price;
-        public double Price
+        public bool Equals(Event other)
         {
-            get { return _price; }
-            set { _price = value; NotifyPropertyChanged(nameof(Price)); }
+            if (Order != other.Order) { return false; }
+            if (Name != other.Name) { return false; }
+            if (Type != other.Type) { return false; }
+            if (Price != other.Price) { return false; }
+            if (Note != other.Note) { return false; }
+            if (Duration != other.Duration) { return false; }
+            if (Comments != other.Comments) { return false; }
+
+            if (Longitude != other.Longitude) { return false; }
+            if (Latitude != other.Latitude) { return false; }
+            if (Elevation != other.Elevation) { return false; }
+            if (Address != other.Address) { return false; }
+            if (City != other.City) { return false; }
+            if (Country != other.Country) { return false; }
+
+            return true;
         }
 
-        private string _note;
-        public string Note
+        public void BeginInit()
         {
-            get { return _note; }
-            set { _note = value; NotifyPropertyChanged(nameof(Note)); }
         }
-
-        private double _duration;
-        public double Duration
-        {
-            get { return _duration; }
-            set { _duration = value; NotifyPropertyChanged(nameof(Duration)); }
-        }
-
-        private Location _location;
-        public Location Location
-        {
-            get { return _location; }
-            set { _location = value; NotifyPropertyChanged(nameof(Location)); }
-        }
-
-        private string _comments;
-        public string Comments
-        {
-            get { return _comments; }
-            set { _comments = value; NotifyPropertyChanged(nameof(Comments)); }
-        }
-
-        public Event(AObservableObject parent)
-        {
-            Parent = parent;
-            Location = new Location(this);
-            ConstantManager constantManager = new ConstantManager();
-            Type = constantManager.BivouacTypes.First();
-            Note = "Default";
-        }
-
-        public string TopType
-        {
-            get { return (string.IsNullOrWhiteSpace(Type))? "" : Type.Split(':').First().Trim(); }
-        }
-
-        public void BeginInit(){ }
 
         public void EndInit()
         {
-            Location.Parent = this;
+            Initial = new Event(this);
+        }
+
+        [BsonIgnore]
+        public bool HasBeenChanged { get { return !this.Equals(Initial); } }
+
+
+        public string GoogleCoordinates
+        {
+            get { return Latitude + "," + Longitude; }
+        }
+
+        public bool HasValidCoordinates
+        {
+            get { return (Longitude != 0 && Latitude != 0); }
         }
     }
 }
