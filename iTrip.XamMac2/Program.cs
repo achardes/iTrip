@@ -34,10 +34,12 @@ namespace iTrip.XamMac2
             // support full screen mode!
             Style.Add<FormHandler>("main", handler =>
                 {
-                    handler.Control.CollectionBehavior |= NSWindowCollectionBehavior.FullScreenPrimary;
-                    //handler.Control.Appearance = NSAppearance.GetAppearance(NSAppearance.NameVibrantDark);
+                    //handler.Control.CollectionBehavior |= NSWindowCollectionBehavior.FullScreenPrimary;
+                    ////handler.Control.Appearance = NSAppearance.GetAppearance(NSAppearance.NameVibrantDark);
                     handler.Control.TitleVisibility = NSWindowTitleVisibility.Hidden;
                     handler.Control.TitlebarAppearsTransparent = true;
+                    handler.Control.StyleMask |= NSWindowStyle.FullSizeContentView;
+                    handler.Control.BackgroundColor = NSColor.White;
                 });
 
             Style.Add<ApplicationHandler>("application", handler =>
@@ -65,6 +67,7 @@ namespace iTrip.XamMac2
                 {
                     handler.ScrollView.BorderType = NSBorderType.NoBorder;
                     handler.Control.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
+                    handler.Control.BackgroundColor = NSColor.White;
                 });
 
             Style.Add<ToolBarHandler>(null, handler =>
@@ -72,6 +75,7 @@ namespace iTrip.XamMac2
                     // change display mode or other options
                     handler.Control.AllowsUserCustomization = true;
                     handler.Control.AutosavesConfiguration = true;
+                    handler.Control.ShowsBaselineSeparator = false;
                 });
         }
     }

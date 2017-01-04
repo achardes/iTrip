@@ -25,7 +25,6 @@ namespace iTrip
             grid.AllowColumnReordering = true;
             grid.CanDeleteItem = s => true;
             grid.SelectedItemBinding.BindDataContext((JourneyViewModel m) => m.SelectedEvent);
-            grid.BackgroundColor = Color.FromArgb(23, 23, 23);
 
             grid.Columns.Add(new GridColumn
             {
@@ -144,7 +143,7 @@ namespace iTrip
                 }
             };
 
-            return layout;
+            return grid;
         }
 
         static ContextMenu CreateContextMenu(JourneyViewModel journeyViewModel)

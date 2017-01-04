@@ -3,13 +3,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{226D62AD-5738-4846-90C3-0ADC7FFB3215}</ProjectGuid>
-    <ProjectTypeGuids>{42C0BBD9-55CE-4FC1-8D90-A7348ABAFB23};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{8D53369F-69A7-4812-837B-5945AA0C855B}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>iTrip.Mac</RootNamespace>
-    <AssemblyName>iTrip Mac</AssemblyName>
-    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <RootNamespace>iTrip.XamMac2</RootNamespace>
+    <AssemblyName>iTrip</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,15 +20,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
-    <CodeSigningKey></CodeSigningKey>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
-    <UseSGen>false</UseSGen>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
     <PlatformTarget>x86</PlatformTarget>
-    <LinkMode>None</LinkMode>
-    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
-    <TlsProvider>Default</TlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -41,15 +39,15 @@
     <CreatePackage>true</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
-    <UseSGen>false</UseSGen>
-    <LinkMode>SdkOnly</LinkMode>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
     <PlatformTarget>x86</PlatformTarget>
-    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
-    <TlsProvider>Default</TlsProvider>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
     <Reference Include="Eto">
       <HintPath>..\packages\Eto.Forms.2.3.0\lib\net45\Eto.dll</HintPath>
     </Reference>
@@ -58,10 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\iTrip.csproj">
-      <Project>{DFC55E76-957F-4141-AEA2-A491E41E0EE7}</Project>
-      <Name>iTrip</Name>
-    </ProjectReference>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -69,8 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="ITripIcon.icns" />
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\iTrip\iTrip.csproj">
+      <Project>{DFC55E76-957F-4141-AEA2-A491E41E0EE7}</Project>
+      <Name>iTrip</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ITripIcon.icns" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

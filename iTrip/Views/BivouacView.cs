@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Eto.Drawing;
 using Eto.Forms;
 
@@ -70,20 +71,45 @@ namespace iTrip
             distanceNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Distance);
             distanceNumericUpDown.Tag = "DistanceTrack";
 
+            NumericUpDown wakeUpTemperatureNumericUpDown = new NumericUpDown();
+            wakeUpTemperatureNumericUpDown.DataContext = bivouac;
+            wakeUpTemperatureNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.WakeUpTemperature);
+            wakeUpTemperatureNumericUpDown.Tag = "WakeUpTemperature";
+
+            CheckBox photoCheckBox = new CheckBox();
+            photoCheckBox.DataContext = bivouac;
+            photoCheckBox.BindDataContext(c => c.Checked, (Bivouac m) => m.Photo);
+            photoCheckBox.Tag = "Photo";
+
             TextArea textArea = new TextArea();
             textArea.DataContext = bivouac;
-            textArea.TextColor = Color.FromArgb(220, 220, 220);
-            textArea.BackgroundColor = Color.FromArgb(33, 33, 33);
             textArea.BindDataContext(c => c.Text, (Bivouac m) => m.Comments);
+
+            GridView tagsGrid = new GridView();
+            tagsGrid.DataStore = bivouac.GetBivouacTags();
+            tagsGrid.ShowHeader = false;
+
+            tagsGrid.Columns.Add(new GridColumn
+            {
+                DataCell = new CheckBoxCell { Binding = Binding.Property<Tag, bool?>(r => r.IsChecked) },
+                Editable = true
+            });
+
+            tagsGrid.Columns.Add(new GridColumn
+            {
+                DataCell = new TextBoxCell { Binding = Binding.Property<Tag, string>(r => r.Name) },
+                Editable = false
+            });
 
             TableLayout layout = new TableLayout();
             layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(typeDropDown), ViewHelper.AddLabelToControl(noteDropDown), null)));
             layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(addressTextBox), ViewHelper.AddLabelToControl(cityTextBox), ViewHelper.AddLabelToControl(countryDropDown), null)));
             layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(elevationNumericUpDown), ViewHelper.AddLabelToControl(distanceNumericUpDown), ViewHelper.AddLabelToControl(distanceTrackNumericUpDown), null)));
             layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(latitudeTextBox), ViewHelper.AddLabelToControl(longitudeTextBox), null)));
+            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(wakeUpTemperatureNumericUpDown), ViewHelper.AddLabelToControl(photoCheckBox), null)));
             layout.Rows.Add(textArea);
 
-            return new GroupBox() { Padding = 5, Content = layout, Text = "Bivouac"};
+            return new GroupBox() { Padding = 5, Content = ViewHelper.AppendH(layout, tagsGrid), Text = "Bivouac"};
         }
     }
 }

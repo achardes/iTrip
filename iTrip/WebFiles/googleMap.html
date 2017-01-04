@@ -16,10 +16,13 @@
   </head>
   <body>
     <div id="map"></div>
+	<a download="map.txt" id="downloadlink" style="display:none" >Download</a>
     <script>
 			
     	var directionsDisplay;
-		var directionsService
+		var directionsService;
+		var lastResponse;
+		var textFile = null;
 
 		function initMap() {
 			directionsDisplay = new google.maps.DirectionsRenderer;
@@ -48,11 +51,39 @@
 				travelMode: 'DRIVING'
 			}, function(response, status) {
 				if (status === 'OK') {
+					lastResponse = response;
 					directionsDisplay.setDirections(response);
 				} else {
 					window.alert('Directions request failed due to ' + status);
 				}
 			});
+		}
+
+		 makeTextFile = function (text) {
+		    var data = new Blob([text], {type: 'text/plain'});
+
+		    // If we are replacing a previously generated file we need to
+		    // manually revoke the object URL to avoid memory leaks.
+		    if (textFile !== null) {
+		      window.URL.revokeObjectURL(textFile);
+		    }
+
+		    textFile = window.URL.createObjectURL(data);
+
+		    return textFile;
+ 		 };
+
+		function displayLastResponse() {
+			var points = lastResponse.routes[0].overview_path;
+			var str = Array(); 
+
+			for (i=0;i<points.length;i++) {
+				str.push("{lat: " + points[i].lat() + ", lng:" + points[i].lng() + "}");
+			}
+
+			var link = document.getElementById('downloadlink');
+    		link.href = makeTextFile(str.toString());
+			link.click();
 		}
 			
     </script>

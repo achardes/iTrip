@@ -14,6 +14,7 @@ namespace iTrip
     public class MainView : Form
     {
         public MainViewModel MainViewModel { get; set; }
+        SelectableFilterCollection<JourneyViewModel> JourneyList { get; set; }
 
         public MainView()
         {
@@ -25,9 +26,9 @@ namespace iTrip
             ClientSize = new Size(1200, 600);
 
             var gridView = new GridView();
-            SelectableFilterCollection<JourneyViewModel> journeyList = new SelectableFilterCollection<JourneyViewModel>(gridView, MainViewModel.Journeys);
+            JourneyList = new SelectableFilterCollection<JourneyViewModel>(gridView, MainViewModel.Journeys);
             gridView.ShowHeader = false;
-            gridView.DataStore = journeyList;
+            gridView.DataStore = JourneyList;
             gridView.SelectedItemBinding.BindDataContext((MainViewModel m) => m.SelectedJourney);
             gridView.ContextMenu = CreateContextMenu();
             gridView.AllowMultipleSelection = true;
@@ -42,16 +43,24 @@ namespace iTrip
                 Sortable = false,
             });
 
-            var searchBox = CreateSearchBox(journeyList);
+            var searchBox = CreateSearchBox(JourneyList);
 
-            var addButton = new Button();
+            var addButton = new Label();
             addButton.Text = "+";
-            addButton.Click += (sender, e) => AddNewJourney();
+            addButton.Font = new Font(FontFamilies.SansFamilyName, 30);
+            addButton.TextColor = Colors.DarkGray;
+            addButton.MouseUp += (sender, e) => { AddNewJourney(); ((Label)sender).TextColor = Colors.DarkGray; };
+            addButton.MouseDown += (sender, e) => ((Label)sender).TextColor = Colors.Black;
 
-            var deleteButton = new Button();
-            deleteButton.Text = "-";
-            deleteButton.Click += (sender, e) => DeleteSelectedJourney();
-            deleteButton.BindDataContext(c => c.Enabled, (MainViewModel m) => m.HasSelectedJourney);
+            var deleteButton = new Label();
+            deleteButton.Text = "–";
+            deleteButton.Font = new Font(FontFamilies.SansFamilyName, 32);
+            deleteButton.TextColor = Colors.DarkGray;
+            deleteButton.MouseUp += (sender, e) => { DeleteSelectedJourney(); ((Label)sender).TextColor = Colors.DarkGray; };
+            deleteButton.MouseDown += (sender, e) => ((Label)sender).TextColor = Colors.Black;
+
+            TableLayout bottomBar = ViewHelper.AppendH(addButton, deleteButton) as TableLayout;
+            bottomBar.Padding = new Padding(5, 0);
 
             var layout = new TableLayout
             {
@@ -59,11 +68,11 @@ namespace iTrip
                 {
                     new TableRow(searchBox) { ScaleHeight = false },
                     new TableRow(gridView) { ScaleHeight = true },
+                    new TableRow(bottomBar) { ScaleHeight = false },
                     //new TableRow(new TableLayout { Rows = { new TableRow(addButton, deleteButton, null) } } ) { ScaleHeight = false }
-                }
+                },
+                Padding = new Padding(0, 20, 0, 0)
             };
-
-
 
             var splitter = new Splitter
             {
@@ -82,8 +91,9 @@ namespace iTrip
                 {
                     new TableRow(splitter) { ScaleHeight = true },
                     //new TableRow(GetStatusBar()) { ScaleHeight = false }
-                }
-            };
+                },
+                Padding = new Padding(0, 0, 0, 0),
+            };  
 
 
             Content = mainLayout;
@@ -103,6 +113,9 @@ namespace iTrip
             var addExpenseCommand = new Command { MenuText = "Add Event", Image = Icon.FromResource("iTrip.Images.AddExpenseIcon.png"), ToolBarText = "Add Event" };
             addExpenseCommand.Executed += (sender, e) => MainViewModel.SelectedJourney?.AddSpending();
 
+            var displayMapCommand = new Command { MenuText = "DisplayMap", ToolBarText = "DisplayMap" };
+            displayMapCommand.Executed += (sender, e) => DisplayMap();
+
 
 
             //var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
@@ -116,7 +129,7 @@ namespace iTrip
             {
                 Items = {
 					// File submenu
-                    new ButtonMenuItem { Text = "&File", Items = { addJourneyCommand, saveJourneyCommand, addEventCommand, addExpenseCommand } }
+                    new ButtonMenuItem { Text = "&File", Items = { addJourneyCommand, saveJourneyCommand, addEventCommand, addExpenseCommand, displayMapCommand } }
 					// new ButtonMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
 					// new ButtonMenuItem { Text = "&View", Items = { /* commands/items */ } },
 				},
@@ -129,7 +142,7 @@ namespace iTrip
             };
 
             // create toolbar			
-            ToolBar = new ToolBar { Items = { addJourneyCommand, new SeparatorToolItem() { Type = SeparatorToolItemType.FlexibleSpace }, saveJourneyCommand, addEventCommand, addExpenseCommand } };
+            //ToolBar = new ToolBar { Items = { addJourneyCommand, new SeparatorToolItem() { Type = SeparatorToolItemType.FlexibleSpace }, saveJourneyCommand, addEventCommand, addExpenseCommand } };
         }
 
         private Control GetStatusBar()
@@ -139,6 +152,35 @@ namespace iTrip
             layout.Rows.Add(new TableRow(new Panel() { Height = 1, BackgroundColor = Color.FromArgb(12, 12, 12) }){ ScaleHeight = false });
             layout.Rows.Add(new TableRow(new Label() { Text = "Ready", TextColor = Color.FromArgb(215, 125, 69) }){ ScaleHeight = true });
             return layout;
+        }
+
+        private void DisplayMap()
+        {
+            List<string> wayPoints = JourneyList.SelectedItems.ToList().SelectMany(x => x.GetWayPoints()).ToList();
+            string script = MapHelper.GetGoogleMapParameters(wayPoints);
+            Dialog mapWindow = new Dialog();
+
+            WebView webView = new WebView();
+            webView.Url = MapHelper.GoogleMapUrl();
+            webView.Size = new Size(800, 500);
+            //webView.LoadComplete += (sender, e) => ((WebView)sender).ExecuteScript(script);
+
+            Button loadButton = new Button();
+            loadButton.Text = "Load";
+            loadButton.Click += (sender, e) => webView.ExecuteScript(script);
+
+            Button exportButton = new Button();
+            exportButton.Text = "Export";
+            exportButton.Click += (sender, e) => webView.ExecuteScript("displayLastResponse()");
+
+            Button closeButton = new Button();
+            closeButton.Text = "Close";
+            closeButton.Click += (sender, e) => mapWindow.Close();
+
+            mapWindow.Content = ViewHelper.AppendV(webView, ViewHelper.AppendH(loadButton, exportButton, closeButton, null));
+            mapWindow.DisplayMode = DialogDisplayMode.Attached;
+            mapWindow.ShowModal(this);
+            
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

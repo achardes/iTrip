@@ -1,31 +1,14 @@
-﻿<Properties StartupConfiguration="{8D53369F-69A7-4812-837B-5945AA0C855B}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip.XamMac2/Program.cs">
+﻿<Properties StartupConfiguration="{8D53369F-69A7-4812-837B-5945AA0C855B}|Default" GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.ItemProperties.iTrip.XamMac PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip Status">
     <Files>
-      <File FileName="iTrip.XamMac2/Program.cs" Line="37" Column="104" />
-      <File FileName="TestToDelete.Mac/Program.cs" Line="28" Column="1" />
-      <File FileName="iTrip/Views/MainView.cs" Line="218" Column="26" />
-      <File FileName="iTrip.XamMac2/Properties/AssemblyInfo.cs" Line="27" Column="1" />
-      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="67" Column="10" />
-      <File FileName="iTrip/Views/SpendingListView.cs" Line="25" Column="60" />
-      <File FileName="iTrip/Views/BivouacView.cs" Line="53" Column="60" />
-      <File FileName="iTrip/Views/JourneyView.cs" Line="32" Column="13" />
-      <File FileName="iTrip/ViewModels/JourneyViewModel.cs" Line="22" Column="45" />
-      <File FileName="iTrip/Helpers/ViewHelper.cs" Line="16" Column="33" />
-      <File FileName="iTrip/Models/Journey.cs" Line="108" Column="13" />
-      <File FileName="iTrip/Views/EventListView.cs" Line="28" Column="60" />
-      <File FileName="iTrip/Models/Bivouac.cs" Line="27" Column="1" />
-      <File FileName="iTrip/Models/ALocatedObject.cs" Line="29" Column="1" />
-      <File FileName="iTrip.XamMac2/Info.plist" />
-      <File FileName="iTrip/WebFiles/googleMap.html" Line="29" Column="21" />
-      <File FileName="iTrip/Models/Event.cs" Line="22" Column="42" />
-      <File FileName="iTrip/Helpers/Converters.cs" Line="16" Column="10" />
+      <File FileName="iTrip Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.iTrip.XamMac2 PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.iTrip.Wpf PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

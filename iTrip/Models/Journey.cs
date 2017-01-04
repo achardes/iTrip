@@ -130,6 +130,7 @@ namespace iTrip
             Events.ItemPropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Spendings.ItemPropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Bivouac.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            Bivouac.Tags.CollectionChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Initial = new Journey(this);
         }
     }

@@ -29,51 +29,21 @@ namespace iTrip
             Journey.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(Text)); };
         }
 
-        public Uri GoogleMapUrl
+        public List<string> GetWayPoints()
         {
-            get
+            List<string> waypoints = new List<string>();
+            foreach (var item in Journey.Events.OrderBy(x => x.Order).Where(x => x.HasValidCoordinates))
             {
-                string curDir = Directory.GetCurrentDirectory();
-                return new Uri(String.Format("{0}/googleMap.html", curDir));
+                waypoints.Add(item.GoogleCoordinates);
             }
+            if (Journey.Bivouac.HasValidCoordinates) { waypoints.Add(Journey.Bivouac.GoogleCoordinates); }
+
+            return waypoints;
         }
 
         public string GoogleMapParameters
         {
-            get
-            {
-                string str = "";
-                List<string> waypoints = new List<string>();
-                foreach (var item in Journey.Events.OrderBy(x => x.Order).Where(x => x.HasValidCoordinates))
-                {
-                    waypoints.Add(item.GoogleCoordinates);
-                }
-                if (Journey.Bivouac.HasValidCoordinates) { waypoints.Add(Journey.Bivouac.GoogleCoordinates); }
-
-                if (waypoints.Count >= 2)
-                {
-                    str += "'" + waypoints.First() + "',";
-                    str += "'" + waypoints.Last() + "'";
-
-                    if (waypoints.Count > 2)
-                    {
-                        str += ",[";
-                        for (int i = 1; i < waypoints.Count - 1; i++)
-                        {
-                            str += "'" + waypoints[i] + "',";
-                        }
-                        str.TrimEnd('\'');
-                        str += "]";
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(str))
-                {
-                    str = "calculateAndDisplayRoute(" + str + ")"; 
-                }
-
-                return str;
-            }
+            get { return MapHelper.GetGoogleMapParameters(GetWayPoints()); }
         }
 
         public Event SelectedEvent { get; set; }

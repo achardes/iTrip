@@ -22,6 +22,8 @@ namespace iTrip
         public string Note { get; set; }
         public int Distance { get; set; }
         public int DistanceTrack { get; set; }
+        public bool Photo { get; set; }
+        public int WakeUpTemperature { get; set; }
         public string Comments { get; set; }
         public ObservableCollection<string> Tags { get; set; }
 
@@ -104,7 +106,12 @@ namespace iTrip
             Initial = new Bivouac(this);
         }
 
-
+        public List<Tag> GetBivouacTags()
+        {
+            var tags = new List<Tag>();
+            ConstantManager.Instance.BivouacTags.ToList().ForEach(x => tags.Add(new Tag(Tags, x, Tags.Contains(x))));
+            return tags;
+        }
 
         public string GoogleCoordinates
         {
@@ -114,6 +121,31 @@ namespace iTrip
         public bool HasValidCoordinates
         {
             get { return (Longitude != 0 && Latitude != 0); }
+        }
+    }
+
+    public class Tag
+    {
+        private ObservableCollection<string> Tags { get; set; }
+        public string Name { get; set; }
+
+        private bool _isChecked;
+        public bool IsChecked 
+        { 
+            get { return _isChecked; }
+            set 
+            {
+                if (value) { if (!Tags.Contains(Name)) { Tags.Add(Name); } }
+                else { if (Tags.Contains(Name)) { Tags.Remove(Name); } }
+                _isChecked = value;
+            }
+        }
+
+        public Tag(ObservableCollection<string> tags, string name, bool isChecked)
+        {
+            Tags = tags;
+            Name = name;
+            IsChecked = isChecked;
         }
     }
 }

@@ -22,8 +22,6 @@ namespace iTrip
             grid.AllowColumnReordering = true;
             grid.CanDeleteItem = s => true;
 
-            grid.BackgroundColor = Color.FromArgb(23, 23, 23);
-
             grid.Columns.Add(new GridColumn
             {
                 DataCell = new ComboBoxCell { Binding = Binding.Property<Spending, object>(r => r.Type), DataStore = ConstantManager.Instance.SpendingTypes },
@@ -69,7 +67,7 @@ namespace iTrip
                 }
             };
 
-            return layout;
+            return grid;
         }
     }
 }

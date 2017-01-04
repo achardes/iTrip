@@ -6,7 +6,7 @@
     <ProjectGuid>{DFC55E76-957F-4141-AEA2-A491E41E0EE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>iTrip</RootNamespace>
-    <AssemblyName>iTrip</AssemblyName>
+    <AssemblyName>iTrip.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
