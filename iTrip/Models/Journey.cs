@@ -30,6 +30,8 @@ namespace iTrip
         public string Weather { get; set; }
         public string Note { get; set; }
         public Bivouac Bivouac { get; set; }
+        public bool IncludeBorderCrossing { get; set; }
+        public BorderCrossing BorderCrossing { get; set; }
         public ItemObservableCollection<Event> Events { get; set; }
         public ItemObservableCollection<Spending> Spendings { get; set; }
 
@@ -41,6 +43,7 @@ namespace iTrip
             Note = "1";
 
             Bivouac = new Bivouac();
+            BorderCrossing = new BorderCrossing();
             Events = new ItemObservableCollection<Event>();
             Spendings = new ItemObservableCollection<Spending>();
 
@@ -53,6 +56,9 @@ namespace iTrip
             ToDateTime = other.ToDateTime;
             Weather = other.Weather;
             Note = other.Note;
+            Bivouac = new Bivouac(other.Bivouac);
+            BorderCrossing = new BorderCrossing(other.BorderCrossing);
+            IncludeBorderCrossing = other.IncludeBorderCrossing;
 
             Events = other.Events.Duplicate();
             Spendings = other.Spendings.Duplicate();
@@ -64,7 +70,10 @@ namespace iTrip
             if (ToDateTime != other.ToDateTime) { return false; }
             if (Weather != other.Weather) { return false; }
             if (Note != other.Note) { return false; }
+            if (IncludeBorderCrossing != other.IncludeBorderCrossing) { return false; }
             if (Bivouac.HasBeenChanged) { return false; }
+
+            if (BorderCrossing.HasBeenChanged) { return false; }
 
             if (Events.Count != other.Events.Count) { return false; }
             if (Spendings.Count != other.Spendings.Count) { return false; }
@@ -95,7 +104,7 @@ namespace iTrip
 
         public string ShortDisplayName
         {
-            get { return (HasBeenChanged? "*" : "") + FromDateTime.ToString("yy/MM/dd") + " (" + Duration + " day" + ((Duration > 1) ? "s" : "") + ")"; }
+            get { return (HasBeenChanged? "*" : "") + ToDateTime.ToString("dd/MM/yy") + " (" + Duration + " day" + ((Duration > 1) ? "s" : "") + ")"; }
         }
 
         public async void Save()
@@ -108,6 +117,7 @@ namespace iTrip
 
             Initial = new Journey(this);
             Bivouac.EndInit();
+            BorderCrossing.EndInit();
             Events.ToList().ForEach(x => x.EndInit());
             Spendings.ToList().ForEach(x => x.EndInit());
 
@@ -131,6 +141,7 @@ namespace iTrip
             Spendings.ItemPropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Bivouac.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Bivouac.Tags.CollectionChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
+            BorderCrossing.PropertyChanged += (sender, e) => OnPropertyChanged(nameof(HasBeenChanged));
             Initial = new Journey(this);
         }
     }

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using Eto;
+using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace iTrip
 {
@@ -15,9 +17,19 @@ namespace iTrip
     {
         public MainViewModel MainViewModel { get; set; }
         SelectableFilterCollection<JourneyViewModel> JourneyList { get; set; }
+        Process mongoDbProcess { get; set; }
 
         public MainView()
         {
+            ProcessStartInfo mongoDbProcessInfo = new ProcessStartInfo();
+            mongoDbProcessInfo.FileName = "/usr/local/Cellar/mongodb/3.4.0/bin/mongod";
+            mongoDbProcessInfo.Arguments = "--config /usr/local/etc/mongod.conf";
+
+            mongoDbProcessInfo.UseShellExecute = false;
+            mongoDbProcessInfo.CreateNoWindow = true;
+            mongoDbProcess = Process.Start(mongoDbProcessInfo);
+            //p.WaitForExit();
+
             MainViewModel = new MainViewModel();
 
             this.DataContext = MainViewModel;
@@ -110,7 +122,7 @@ namespace iTrip
             var addEventCommand = new Command { MenuText = "Add Event", ToolBarText = "Add Event" };
             addEventCommand.Executed += (sender, e) => MainViewModel.SelectedJourney?.AddEvent();
 
-            var addExpenseCommand = new Command { MenuText = "Add Event", Image = Icon.FromResource("iTrip.Images.AddExpenseIcon.png"), ToolBarText = "Add Event" };
+            var addExpenseCommand = new Command { MenuText = "Add Expense", Image = Icon.FromResource("iTrip.Images.AddExpenseIcon.png"), ToolBarText = "Add Event" };
             addExpenseCommand.Executed += (sender, e) => MainViewModel.SelectedJourney?.AddSpending();
 
             var displayMapCommand = new Command { MenuText = "DisplayMap", ToolBarText = "DisplayMap" };
@@ -156,8 +168,13 @@ namespace iTrip
 
         private void DisplayMap()
         {
-            List<string> wayPoints = JourneyList.SelectedItems.ToList().SelectMany(x => x.GetWayPoints()).ToList();
-            string script = MapHelper.GetGoogleMapParameters(wayPoints);
+            List<string> wayPoints = JourneyList.SelectedItems.ToList().OrderBy(x => x.Journey.FromDateTime).SelectMany(x => x.GetWayPoints()).ToList();
+            List<DirectionRequest> directionRequests = MapHelper.GetDirectionRequests(wayPoints);
+
+            var jsonDirectionRequests = JsonConvert.SerializeObject(directionRequests);
+
+
+            string script = "calculateAndDisplayRoute(" + jsonDirectionRequests + ");";
             Dialog mapWindow = new Dialog();
 
             WebView webView = new WebView();
@@ -188,7 +205,7 @@ namespace iTrip
             if (MainViewModel.IsAnythingToSave())
             {
                 DialogResult result = MessageBox.Show(this, "It Seems that there is unsaved journey... Are you sure you want to quit?", MessageBoxButtons.YesNo, MessageBoxType.Question, MessageBoxDefaultButton.No);
-                if (result == DialogResult.No) { e.Cancel = true; }
+                if (result == DialogResult.No) { e.Cancel = true; mongoDbProcess.Kill(); }
             }
         }
 

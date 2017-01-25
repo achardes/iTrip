@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace iTrip
 {
@@ -27,12 +28,13 @@ namespace iTrip
         public string Comments { get; set; }
         public ObservableCollection<string> Tags { get; set; }
 
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public string Coordinates { get; set; }
         public double Elevation { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public bool FromIOverLander { get; set; }
+        public bool ToIOverLander { get; set; }
 
         public Bivouac()
         {
@@ -40,8 +42,7 @@ namespace iTrip
             Note = "Default";
             Type = ConstantManager.Instance.BivouacTypes.First();
             Comments = string.Empty;
-            Longitude = 0;
-            Latitude = 0;
+            Coordinates = string.Empty;
             Elevation = 0;
             Address = string.Empty;
             City = string.Empty;
@@ -56,12 +57,18 @@ namespace iTrip
             Note = other.Note;
             Type = other.Type;
             Comments = other.Comments;
-            Longitude = other.Longitude;
-            Latitude = other.Latitude;
+            Distance = other.Distance;
+            DistanceTrack = other.DistanceTrack;
+            WakeUpTemperature = other.WakeUpTemperature;
+            Photo = other.Photo;
+
+            Coordinates = other.Coordinates;
             Elevation = other.Elevation;
             Address = other.Address;
             City = other.City;
             Country = other.Country;
+            FromIOverLander = other.FromIOverLander;
+            ToIOverLander = other.ToIOverLander;
         }
 
         public bool Equals(Bivouac other)
@@ -71,12 +78,15 @@ namespace iTrip
             if (Distance != other.Distance) { return false; }
             if (DistanceTrack != other.DistanceTrack) { return false; }
             if (Comments != other.Comments) { return false; }
-            if (Longitude != other.Longitude) { return false; }
-            if (Latitude != other.Latitude) { return false; }
+            if (Coordinates != other.Coordinates) { return false; }
             if (Elevation != other.Elevation) { return false; }
             if (Address != other.Address) { return false; }
             if (City != other.City) { return false; }
             if (Country != other.Country) { return false; }
+            if (FromIOverLander != other.FromIOverLander) { return false; }
+            if (ToIOverLander != other.ToIOverLander) { return false; }
+            if (WakeUpTemperature != other.WakeUpTemperature) { return false; }
+            if (Photo != other.Photo) { return false; }
             if (!Tags.OrderBy(i => i).SequenceEqual(other.Tags.OrderBy(i => i))) { return false; } 
 
             return true;
@@ -111,16 +121,6 @@ namespace iTrip
             var tags = new List<Tag>();
             ConstantManager.Instance.BivouacTags.ToList().ForEach(x => tags.Add(new Tag(Tags, x, Tags.Contains(x))));
             return tags;
-        }
-
-        public string GoogleCoordinates
-        {
-            get { return Latitude + "," + Longitude; }
-        }
-
-        public bool HasValidCoordinates
-        {
-            get { return (Longitude != 0 && Latitude != 0); }
         }
     }
 

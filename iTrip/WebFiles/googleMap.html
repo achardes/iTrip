@@ -18,45 +18,77 @@
     <div id="map"></div>
 	<a download="map.txt" id="downloadlink" style="display:none" >Download</a>
     <script>
-			
+
+		var elevatorService;
     	var directionsDisplay;
 		var directionsService;
 		var lastResponse;
 		var textFile = null;
+		var geoJsonPath = [];
+		var map;
+		var bounds;
+		var lastPolyline;
+		var lastMarkers = [];
 
 		function initMap() {
-			directionsDisplay = new google.maps.DirectionsRenderer;
-			directionsService = new google.maps.DirectionsService;
-			var map = new google.maps.Map(document.getElementById('map'), {
+			map = new google.maps.Map(document.getElementById('map'), {
 				zoom: 3,
 				center: {lat: 38.85, lng: -96.65}
+			});
+			
+			elevatorService = new google.maps.ElevationService;
+			directionsDisplay = new google.maps.DirectionsRenderer;
+			directionsService = new google.maps.DirectionsService;
+			
+			google.maps.event.addListener(map, "rightclick", function(event) {
+				displayLocationElevation(event.latLng, elevatorService);
 			});
 			
 			directionsDisplay.setMap(map);
 		}
 
-		function calculateAndDisplayRoute(start, end, points) {
+		function calculateAndDisplayRoute(directionRequests) {
+			clearMap();
+			var totalWayPoints = [];
 			
-			var waypoints = [];
-			if(points) {
-				for (i=0;i<points.length;i++) {
-					waypoints.push({location:points[i], stopover:true })
+			for (i=0;i<directionRequests.length;i++) {
+
+				totalWayPoints.push(getLatLngFromStr(directionRequests[i].StartPoint));
+				totalWayPoints.push(getLatLngFromStr(directionRequests[i].EndPoint));
+			
+				var waypoints = [];
+				if(directionRequests[i].WayPoints) {
+					for (j=0;j<directionRequests[i].WayPoints.length;j++) {
+						waypoints.push({location:directionRequests[i].WayPoints[j], stopover:true })
+						totalWayPoints.push(getLatLngFromStr(directionRequests[i].WayPoints[j]));
+					}
 				}
+				
+				directionsService.route({
+					origin: directionRequests[i].StartPoint,
+					destination: directionRequests[i].EndPoint,
+					waypoints: waypoints,
+					travelMode: 'DRIVING'
+				}, function(response, status) {
+					if (status === 'OK') {
+						//lastResponse = response;
+						//directionsDisplay.setDirections(response);
+						addGeoJson(response);
+						displayGeoJson();
+					} else {
+						window.alert('Directions request failed due to ' + status);
+					}
+				});
 			}
-			
-			directionsService.route({
-				origin: start,
-				destination: end,
-				waypoints: waypoints,
-				travelMode: 'DRIVING'
-			}, function(response, status) {
-				if (status === 'OK') {
-					lastResponse = response;
-					directionsDisplay.setDirections(response);
-				} else {
-					window.alert('Directions request failed due to ' + status);
-				}
-			});
+
+			for (i=0;i<totalWayPoints.length;i++) {
+		        var marker = new google.maps.Marker({
+		          position: totalWayPoints[i],
+		          map: map,
+		          title: totalWayPoints[i].lat + ", " + totalWayPoints[i].lng
+		        });
+				lastMarkers.push(marker);
+			}
 		}
 
 		 makeTextFile = function (text) {
@@ -73,17 +105,92 @@
 		    return textFile;
  		 };
 
-		function displayLastResponse() {
-			var points = lastResponse.routes[0].overview_path;
-			var str = Array(); 
+		function getStrFromLatLng(latLng)
+		{
+			return "{" + latLng.lat + ", " + latLng.lng + "}";
+		}
 
-			for (i=0;i<points.length;i++) {
-				str.push("{lat: " + points[i].lat() + ", lng:" + points[i].lng() + "}");
+		function getLatLngFromStr(str)
+		{
+			var coordinates = str.split(",");
+			return {lat: Number(coordinates[0].trim()), lng: Number(coordinates[1].trim())}
+		}
+
+		function displayGeoJson()
+		{
+			var path = new google.maps.Polyline({
+			    path: geoJsonPath,
+			    geodesic: true,
+			    strokeColor: '#00B3FD',
+			    strokeOpacity: 0.8,
+			    strokeWeight: 4
+			});
+
+			path.setMap(map);
+			lastPolyline = path;
+
+			var bounds = new google.maps.LatLngBounds();
+
+			for (i=0;i<geoJsonPath.length;i++) {
+				bounds.extend(geoJsonPath[i]);
 			}
 
+		    map.setCenter(bounds.getCenter());
+		    map.fitBounds(bounds);
+		}
+			
+ 		function addGeoJson(response)
+		{
+			var points = response.routes[0].overview_path;
+			for (i=0;i<points.length;i++) {
+				geoJsonPath.push({lat: points[i].lat(), lng: points[i].lng()});
+			}
+		}
+			
+		function displayLastResponse() {
 			var link = document.getElementById('downloadlink');
-    		link.href = makeTextFile(str.toString());
+
+			var latLngStrArray = [];
+			
+			for (i=0;i<geoJsonPath.length;i++) {
+				latLngStrArray.push(getStrFromLatLng(geoJsonPath[i]));
+			}
+			
+    		link.href = makeTextFile(latLngStrArray.toString());
 			link.click();
+		}
+
+		function displayLocationElevation(location, elevator) {
+		    var lat = location.lat();
+	    	var lng = location.lng();
+		  // Initiate the location request
+		  elevator.getElevationForLocations({
+		    'locations': [location]
+		  }, function(results, status) {
+		    if (status === 'OK') {
+		      // Retrieve the first result
+		      if (results[0]) {
+				console.log(results[0].elevation);
+		        // Open the infowindow indicating the elevation at the clicked position.
+			    alert("Coodinates: " + lat + ", " + lng + "\nElevation: " + Math.round(results[0].elevation * 100)/100);
+		      } else {
+				alert("Coodinates: " + lat + ", " + lng + "\nElevation: No results found");
+		      }
+		    } else {
+				alert("Coodinates: " + lat + ", " + lng + "\nElevation: " + 'Elevation service failed due to: ' + status);
+		    }
+		  });
+		}
+
+		function clearMap()
+		{
+			if(lastPolyline) { lastPolyline.setMap(null); }
+			for (i=0;i<lastMarkers.length;i++) 
+			{
+				lastMarkers[i].setMap(null);
+			}
+			lastPolyline = null;
+			lastMarkers = [];
 		}
 			
     </script>

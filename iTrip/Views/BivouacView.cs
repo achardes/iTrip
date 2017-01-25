@@ -38,56 +38,56 @@ namespace iTrip
             countryDropDown.BindDataContext(c => c.SelectedKey, (Bivouac m) => m.Country);
             countryDropDown.Tag = "Country";
 
-            TextBox latitudeTextBox = new TextBox();
-            latitudeTextBox.DataContext = bivouac;
-            latitudeTextBox.Width = 100;
-            latitudeTextBox.TextBinding.BindDataContext(
-                Binding.Property((Bivouac b) => b.Latitude)
-                .Convert(r => r.ToString(), v => Converters.FromStringToDouble(v))
-            );
-            latitudeTextBox.Tag = "Latitude";
-
-            TextBox longitudeTextBox = new TextBox();
-            longitudeTextBox.DataContext = bivouac;
-            longitudeTextBox.Width = 100;
-            longitudeTextBox.TextBinding.BindDataContext(
-                Binding.Property((Bivouac b) => b.Longitude)
-                .Convert(r => r.ToString(), v => Converters.FromStringToDouble(v))
-            );
-            longitudeTextBox.Tag = "Longitude";
+            TextBox coordinatesTextBox = new TextBox();
+            coordinatesTextBox.DataContext = bivouac;
+            coordinatesTextBox.BindDataContext(c => c.Text, (Bivouac m) => m.Coordinates);
+            coordinatesTextBox.Tag = "Lat, Long";
 
             NumericUpDown elevationNumericUpDown = new NumericUpDown();
             elevationNumericUpDown.DataContext = bivouac;
             elevationNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Elevation);
-            elevationNumericUpDown.Tag = "Elevation";
-
-            NumericUpDown distanceTrackNumericUpDown = new NumericUpDown();
-            distanceTrackNumericUpDown.DataContext = bivouac;
-            distanceTrackNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.DistanceTrack);
-            distanceTrackNumericUpDown.Tag = "DistanceTrack";
+            elevationNumericUpDown.Tag = "Height (m)";
 
             NumericUpDown distanceNumericUpDown = new NumericUpDown();
             distanceNumericUpDown.DataContext = bivouac;
             distanceNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Distance);
-            distanceNumericUpDown.Tag = "DistanceTrack";
+            distanceNumericUpDown.Tag = "Total (km)";
+
+            NumericUpDown distanceTrackNumericUpDown = new NumericUpDown();
+            distanceTrackNumericUpDown.DataContext = bivouac;
+            distanceTrackNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.DistanceTrack);
+            distanceTrackNumericUpDown.Tag = "Track (km)";
 
             NumericUpDown wakeUpTemperatureNumericUpDown = new NumericUpDown();
             wakeUpTemperatureNumericUpDown.DataContext = bivouac;
             wakeUpTemperatureNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.WakeUpTemperature);
-            wakeUpTemperatureNumericUpDown.Tag = "WakeUpTemperature";
+            wakeUpTemperatureNumericUpDown.Tag = "Wake T (C°)";
 
             CheckBox photoCheckBox = new CheckBox();
             photoCheckBox.DataContext = bivouac;
             photoCheckBox.BindDataContext(c => c.Checked, (Bivouac m) => m.Photo);
             photoCheckBox.Tag = "Photo";
 
-            TextArea textArea = new TextArea();
-            textArea.DataContext = bivouac;
-            textArea.BindDataContext(c => c.Text, (Bivouac m) => m.Comments);
+            CheckBox fromiOverLanderCheckBox = new CheckBox();
+            fromiOverLanderCheckBox.DataContext = bivouac;
+            fromiOverLanderCheckBox.BindDataContext(c => c.Checked, (Bivouac m) => m.FromIOverLander);
+            fromiOverLanderCheckBox.Tag = "iOverLander";
+            fromiOverLanderCheckBox.Width = 20;
+
+            CheckBox toiOverLanderCheckBox = new CheckBox();
+            toiOverLanderCheckBox.DataContext = bivouac;
+            toiOverLanderCheckBox.BindDataContext(c => c.Checked, (Bivouac m) => m.ToIOverLander);
+            toiOverLanderCheckBox.Tag = "Shared";
+            toiOverLanderCheckBox.Width = 20;
+
+            TextArea commentTextArea = new TextArea();
+            commentTextArea.DataContext = bivouac;
+            commentTextArea.BindDataContext(c => c.Text, (Bivouac m) => m.Comments);
 
             GridView tagsGrid = new GridView();
             tagsGrid.DataStore = bivouac.GetBivouacTags();
             tagsGrid.ShowHeader = false;
+            tagsGrid.Width = 170;
 
             tagsGrid.Columns.Add(new GridColumn
             {
@@ -101,15 +101,15 @@ namespace iTrip
                 Editable = false
             });
 
-            TableLayout layout = new TableLayout();
-            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(typeDropDown), ViewHelper.AddLabelToControl(noteDropDown), null)));
-            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(addressTextBox), ViewHelper.AddLabelToControl(cityTextBox), ViewHelper.AddLabelToControl(countryDropDown), null)));
-            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(elevationNumericUpDown), ViewHelper.AddLabelToControl(distanceNumericUpDown), ViewHelper.AddLabelToControl(distanceTrackNumericUpDown), null)));
-            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(latitudeTextBox), ViewHelper.AddLabelToControl(longitudeTextBox), null)));
-            layout.Rows.Add(new TableRow(ViewHelper.AppendH(ViewHelper.AddLabelToControl(wakeUpTemperatureNumericUpDown), ViewHelper.AddLabelToControl(photoCheckBox), null)));
-            layout.Rows.Add(textArea);
+            var infoColumn = ViewHelper.AppendV(
+                ViewHelper.AppendH(ViewHelper.Labelize(typeDropDown), ViewHelper.Labelize(addressTextBox)),
+                ViewHelper.AppendH(ViewHelper.Labelize(noteDropDown), ViewHelper.Labelize(cityTextBox)),
+                ViewHelper.AppendH(ViewHelper.Labelize(wakeUpTemperatureNumericUpDown), ViewHelper.Labelize(countryDropDown)),
+                ViewHelper.AppendH(ViewHelper.Labelize(distanceNumericUpDown), ViewHelper.Labelize(coordinatesTextBox)),
+                ViewHelper.AppendH(ViewHelper.Labelize(distanceTrackNumericUpDown), ViewHelper.Labelize(elevationNumericUpDown)),
+                ViewHelper.AppendH(ViewHelper.Labelize(photoCheckBox), ViewHelper.Labelize(fromiOverLanderCheckBox), ViewHelper.Labelize(toiOverLanderCheckBox)));
 
-            return new GroupBox() { Padding = 5, Content = ViewHelper.AppendH(layout, tagsGrid), Text = "Bivouac"};
+            return new GroupBox() { Padding = 5, Content = ViewHelper.AppendH(infoColumn, tagsGrid, new Label() { Width = 20 }, commentTextArea), Text = "Bivouac"};
         }
     }
 }

@@ -8,6 +8,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace iTrip
 {
+    [BsonIgnoreExtraElements]
     public class Spending : INotifyPropertyChanged, IEquatable<Spending>, ISupportInitialize
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -15,35 +16,43 @@ namespace iTrip
         [BsonIgnore]
         private Spending Initial { get; set; }
 
+        public int Order { get; set; }
         public string Type { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
+        public string Coordinates { get; set; }
         public string Comments { get; set; }
  
-        public Spending()
+        public Spending(int order)
         {
+            Order = order;
             Type = ConstantManager.Instance.BivouacTypes.First();
             Quantity = 0;
             Price = 0;
             Comments = string.Empty;
+            Coordinates = string.Empty;
 
             EndInit();
         }
 
         public Spending(Spending other)
         {
+            Order = other.Order;
             Type = other.Type;
             Quantity = other.Quantity;
             Price = other.Price;
             Comments = other.Comments;
+            Coordinates = other.Coordinates;
         }
 
         public bool Equals(Spending other)
         {
             if (Type != other.Type) { return false; }
+            if (Order != other.Order) { return false; }
             if (Quantity != other.Quantity) { return false; }
             if (Price != other.Price) { return false; }
             if (Comments != other.Comments) { return false; }
+            if (Coordinates != other.Coordinates) { return false; }
 
             return true;
         }

@@ -10,17 +10,21 @@ namespace iTrip
     {
         public static Control GetView(JourneyViewModel journeyViewModel)
         {
-            var label = new Label();
-            label.Text = "Spendings";
-            label.VerticalAlignment = VerticalAlignment.Center;
-
-            var addButton = new Button();
-            addButton.Text = "Add";
-            addButton.Click += (sender, e) => journeyViewModel.AddSpending();
-
             var grid = new GridView { DataStore = journeyViewModel.Journey.Spendings };
+            grid.DataContext = journeyViewModel;
             grid.AllowColumnReordering = true;
             grid.CanDeleteItem = s => true;
+            grid.ContextMenu = CreateContextMenu(journeyViewModel);
+            grid.SelectedItemBinding.BindDataContext((JourneyViewModel m) => m.SelectedSpending);
+
+            grid.Columns.Add(new GridColumn
+            {
+                DataCell = new TextBoxCell { Binding = Binding.Property<Spending, int>(r => r.Order).Convert(r => r.ToString(), v => Converters.FromStringToInt(v)) },
+                HeaderText = "Order",
+                Editable = true,
+                Resizable = true,
+                Sortable = true
+            });
 
             grid.Columns.Add(new GridColumn
             {
@@ -51,6 +55,17 @@ namespace iTrip
 
             grid.Columns.Add(new GridColumn
             {
+                DataCell = new TextBoxCell { Binding = Binding.Property<Spending, string>(r => r.Coordinates) },
+                HeaderText = "Lat, Long",
+                Editable = true,
+                Resizable = true,
+                Sortable = true,
+                Width = 200,
+                AutoSize = false
+            });
+
+            grid.Columns.Add(new GridColumn
+            {
                 DataCell = new TextBoxCell { Binding = Binding.Property<Event, string>(r => r.Comments) },
                 HeaderText = "Comments",
                 Editable = true,
@@ -58,16 +73,25 @@ namespace iTrip
                 Sortable = true
             });
 
-            var layout = new TableLayout
-            {
-                Rows =
-                {
-                    new TableRow(new TableLayout() { Rows = { new TableRow (label, addButton, null) } } ) { ScaleHeight = false },
-                    new TableRow(grid) { ScaleHeight = false }
-                }
-            };
-
             return grid;
+        }
+
+        static ContextMenu CreateContextMenu(JourneyViewModel journeyViewModel)
+        {
+            var menu = new ContextMenu();
+
+            var deleteItem = new ButtonMenuItem { Text = "Delete" };
+            deleteItem.Click += (s, e) => { journeyViewModel.DeleteSpending(); };
+            deleteItem.DataContext = journeyViewModel;
+            deleteItem.BindDataContext(c => c.Enabled, (JourneyViewModel m) => m.HasSelectedSpending);
+
+            var addItem = new ButtonMenuItem { Text = "Add" };
+            addItem.Click += (s, e) => { journeyViewModel.AddSpending(); };
+
+            menu.Items.Add(deleteItem);
+            menu.Items.Add(addItem);
+
+            return menu;
         }
     }
 }

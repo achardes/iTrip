@@ -57,11 +57,6 @@ namespace iTrip.XamMac2
                  //handler.ShowBorder = false;
              });
 
-            Style.Add<DialogHandler>(null, handler =>
-             {
-                 //handler.Control.Appearance = NSAppearance.GetAppearance(new MonoMac.Foundation.NSString("NSAppearanceNameVibrantDark"));
-             });
-
             // other styles
             Style.Add<GridViewHandler>("journeyList", handler =>
                 {

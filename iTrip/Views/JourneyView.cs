@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Eto.Drawing;
 using Eto.Forms;
+using Newtonsoft.Json;
 
 namespace iTrip
 {
@@ -9,10 +10,6 @@ namespace iTrip
     {
         public static Control GetView(JourneyViewModel journeyViewModel)
         {
-            var checkBox = new CheckBox();
-            checkBox.DataContext = journeyViewModel.Journey;
-            checkBox.BindDataContext(c => c.Checked, (Journey m) => m.HasBeenChanged);
-
             var webView = GetWebView(journeyViewModel);
 
             TabControl tabControl = new TabControl();
@@ -20,14 +17,39 @@ namespace iTrip
             tabControl.Pages.Add(new TabPage(SpendingListView.GetView(journeyViewModel)) { Text = "Expenses" });
             tabControl.Pages.Add(new TabPage(webView) { Text = "Map" });
 
+            var borderCrossingPage = new TabPage();
+            borderCrossingPage.Text = "Border Crossing";
+            borderCrossingPage.DataContext = journeyViewModel.Journey;
+            borderCrossingPage.BindDataContext(c => c.Enabled, (Journey m) => m.IncludeBorderCrossing);
+            borderCrossingPage.EnabledChanged += (sender, e) =>
+            {
+                if(tabControl.SelectedIndex == 3) tabControl.SelectedIndex = 0;
+            };
+            borderCrossingPage.Content = BorderCrossingView.GetView(journeyViewModel.Journey.BorderCrossing);
+
+            tabControl.Pages.Add(borderCrossingPage);
+
+            tabControl.SelectedIndexChanged += (sender, e) =>
+            {
+                if ((sender as TabControl).SelectedPage.Text == "Map")
+                {
+                    List<string> wayPoints = journeyViewModel.GetWayPoints();
+                    List<DirectionRequest> directionRequests = MapHelper.GetDirectionRequests(wayPoints);
+
+                    var jsonDirectionRequests = JsonConvert.SerializeObject(directionRequests);
+                    string script = "calculateAndDisplayRoute(" + jsonDirectionRequests + ");";
+
+                    webView.ExecuteScript(script);
+                }
+            };
+
             //TableLayout layoutGrids = new TableLayout();
             //layoutGrids.Rows.Add(new TableRow(EventListView.GetView(journeyViewModel)) { ScaleHeight = true });
             //layoutGrids.Rows.Add(new TableRow(SpendingListView.GetView(journeyViewModel)) { ScaleHeight = true });
 
-
-            var button = new Button();
-            button.Text = "Update map";
-            button.Click += (sender, e) => { webView.ExecuteScript(journeyViewModel.GoogleMapParameters); };
+            //var button = new Button();
+            //button.Text = "Update map";
+            //button.Click += (sender, e) => { webView.ExecuteScript(journeyViewModel.GoogleMapParameters); };
 
             TableLayout layout = ViewHelper.AppendV(
                 GetTitleBar(journeyViewModel.Journey),
@@ -36,7 +58,7 @@ namespace iTrip
                         ViewHelper.AppendH(
                             GetWeatherDropDown(journeyViewModel.Journey), 
                             GetNoteSlider(journeyViewModel.Journey),
-                            button,
+                            GetIncludeBorderCrossing(journeyViewModel.Journey),
                             null
                         ),
                         BivouacView.GetView(journeyViewModel.Journey.Bivouac)
@@ -56,6 +78,16 @@ namespace iTrip
             webView.Url = MapHelper.GoogleMapUrl();
             webView.Size = new Size(500, 300);
             return webView;
+        }
+
+        private static Control GetIncludeBorderCrossing(Journey journey)
+        {
+            var checkbox = new CheckBox();
+            checkbox.DataContext = journey;
+            checkbox.BindDataContext(c => c.Checked, (Journey m) => m.IncludeBorderCrossing);
+            checkbox.Tag = "Include a border crossing";
+
+            return ViewHelper.Labelize(checkbox, 160);
         }
 
         private static Control GetTitleBar(Journey journey)
@@ -94,7 +126,7 @@ namespace iTrip
             weatherDropDown.BindDataContext(c => c.SelectedValue, (Journey m) => m.Weather);
             weatherDropDown.Tag = "Weather";
 
-            return ViewHelper.AddLabelToControl(weatherDropDown);
+            return ViewHelper.Labelize(weatherDropDown);
         }
 
         private static Control GetNoteSlider(Journey journey)
@@ -107,7 +139,7 @@ namespace iTrip
             noteDropDown.Tag = "Note";
 
 
-            return ViewHelper.AddLabelToControl(noteDropDown);
+            return ViewHelper.Labelize(noteDropDown);
         }
     }
 }

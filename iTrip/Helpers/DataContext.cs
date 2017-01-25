@@ -16,21 +16,7 @@ namespace iTrip
         {
             string MongoDbServer = "mongodb://localhost:27017";
 
-            IMongoClient client = null;
-
-            try
-            {
-                 client = new MongoClient(MongoDbServer);
-                
-            }
-            catch (Exception ex)
-            {
-                Console.Write("plop");
-            }
-
-
-
-
+            IMongoClient client = new MongoClient(MongoDbServer);
             IMongoDatabase database = client.GetDatabase(databaseName);
 
             var conventionPack = new ConventionPack();

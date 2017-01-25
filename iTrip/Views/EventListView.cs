@@ -10,17 +10,8 @@ namespace iTrip
     {
         public static Control GetView(JourneyViewModel journeyViewModel)
         {
-            var label = new Label();
-            label.Text = "Events";
-            label.VerticalAlignment = VerticalAlignment.Center;
-
-            var addButton = new Button();
-            addButton.Text = "Add";
-            addButton.Click += (sender, e) => journeyViewModel.AddEvent();
-
             var grid = new GridView { DataStore = journeyViewModel.Journey.Events };
             grid.DataContext = journeyViewModel;
-            //grid.BindDataContext(c => c.SelectedItem, (EventListViewModel e) => e.SelectedEvent);
             grid.ContextMenu = CreateContextMenu(journeyViewModel);
             grid.AllowColumnReordering = true;
             grid.CanDeleteItem = s => true;
@@ -113,35 +104,21 @@ namespace iTrip
                 HeaderText = "Country",
                 Editable = true,
                 Resizable = true,
-                Sortable = true
+                Sortable = true,
+                Width = 120,
+                AutoSize = false
             });
 
             grid.Columns.Add(new GridColumn
             {
-                DataCell = new TextBoxCell { Binding = Binding.Property<Event, double>(r => r.Latitude).Convert(r => r.ToString(), v => Converters.FromStringToDouble(v)) },
-                HeaderText = "Latitude",
+                DataCell = new TextBoxCell { Binding = Binding.Property<Event, string>(r => r.Coordinates) },
+                HeaderText = "Lat, Long",
                 Editable = true,
                 Resizable = true,
-                Sortable = true
+                Sortable = true,
+                Width = 200,
+                AutoSize = false
             });
-
-            grid.Columns.Add(new GridColumn
-            {
-                DataCell = new TextBoxCell { Binding = Binding.Property<Event, double>(r => r.Longitude).Convert(r => r.ToString(), v => Converters.FromStringToDouble(v)) },
-                HeaderText = "Longitude",
-                Editable = true,
-                Resizable = true,
-                Sortable = true
-            });
-
-            var layout = new TableLayout
-            {
-                Rows =
-                {
-                    new TableRow(new TableLayout() { Rows = { new TableRow (label, addButton, null) } } ) { ScaleHeight = false },
-                    new TableRow(grid) { ScaleHeight = false }
-                }
-            };
 
             return grid;
         }
@@ -152,7 +129,14 @@ namespace iTrip
 
             var deleteItem = new ButtonMenuItem { Text = "Delete" };
             deleteItem.Click += (s, e) => { journeyViewModel.DeleteEvent(); };
+            deleteItem.DataContext = journeyViewModel;
+            deleteItem.BindDataContext(c => c.Enabled, (JourneyViewModel m) => m.HasSelectedEvent);
+
+            var addItem = new ButtonMenuItem { Text = "Add" };
+            addItem.Click += (s, e) => { journeyViewModel.AddEvent(); };
+
             menu.Items.Add(deleteItem);
+            menu.Items.Add(addItem);
 
             return menu;
         }

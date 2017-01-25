@@ -24,14 +24,13 @@ namespace iTrip
         public string Duration { get; set; }
         public string Comments { get; set; }
 
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public string Coordinates { get; set; }
         public double Elevation { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
-        public Event(int order)
+        public Event(int order, string country)
         {
             Order = order;
             Name = "New Event";
@@ -41,12 +40,12 @@ namespace iTrip
             Type = ConstantManager.Instance.BivouacTypes.First();
             Note = "2";
 
-            Longitude = 0;
-            Latitude = 0;
+            Coordinates = string.Empty;
             Elevation = 0;
             Address = "";
             City = "";
-            Country = ConstantManager.Instance.Countries.First();
+            if (!string.IsNullOrWhiteSpace(country)) { Country = country; }
+            else { Country = ConstantManager.Instance.Countries.First(); }
 
             EndInit();
         }
@@ -61,8 +60,7 @@ namespace iTrip
             Type = other.Type;
             Note = other.Note;
 
-            Longitude = other.Longitude;
-            Latitude = other.Latitude;
+            Coordinates = other.Coordinates;
             Elevation = other.Elevation;
             Address = other.Address;
             City = other.City;
@@ -79,8 +77,7 @@ namespace iTrip
             if (Duration != other.Duration) { return false; }
             if (Comments != other.Comments) { return false; }
 
-            if (Longitude != other.Longitude) { return false; }
-            if (Latitude != other.Latitude) { return false; }
+            if (Coordinates != other.Coordinates) { return false; }
             if (Elevation != other.Elevation) { return false; }
             if (Address != other.Address) { return false; }
             if (City != other.City) { return false; }
@@ -100,16 +97,5 @@ namespace iTrip
 
         [BsonIgnore]
         public bool HasBeenChanged { get { return !this.Equals(Initial); } }
-
-
-        public string GoogleCoordinates
-        {
-            get { return Latitude + "," + Longitude; }
-        }
-
-        public bool HasValidCoordinates
-        {
-            get { return (Longitude != 0 && Latitude != 0); }
-        }
     }
 }

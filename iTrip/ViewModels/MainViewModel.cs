@@ -60,10 +60,12 @@ namespace iTrip
 
         public void Add(DateTime fromDateTime, DateTime toDateTime)
         {
-            Journey journey = new Journey(fromDateTime, toDateTime);
-            Journeys.Add(new JourneyViewModel(journey));
+            Journey journey = new Journey(fromDateTime.Date.AddHours(12).ToUniversalTime(), toDateTime.Date.AddHours(12).ToUniversalTime());
+            JourneyViewModel journeyViewModel = new JourneyViewModel(journey);
+            Journeys.Add(journeyViewModel);
             journey.Save();
             UpdateApplicationBadge();
+            SelectedJourney = journeyViewModel;
         }
 
         public void Save()

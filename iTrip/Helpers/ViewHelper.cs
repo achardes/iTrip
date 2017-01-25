@@ -5,19 +5,20 @@ namespace iTrip
 {
     public static class ViewHelper
     {
-        public static Control AddLabelToControl(Control control)
+        public static Control Labelize(Control control, int labelWidth = 80)
         {
             TableLayout layout = new TableLayout();
 
             Label label = new Label();
             label.VerticalAlignment = VerticalAlignment.Center;
             label.Text = control.Tag + ": ";
-            label.Width = 80;
-            control.Width = 100;
+            label.Width = labelWidth;
+            if (control.Width == -1) { control.Width = 170;}
 
             var row = new TableRow();
             row.Cells.Add(label);
             row.Cells.Add(control);
+            row.Cells.Add(new Label() { Width = 20 });
 
             layout.Rows.Add(row);
 

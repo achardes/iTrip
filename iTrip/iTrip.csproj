@@ -43,6 +43,9 @@
     <Reference Include="PropertyChanged">
       <HintPath>..\packages\PropertyChanged.Fody.1.52.1\lib\netstandard10\PropertyChanged.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +73,9 @@
     <Compile Include="Helpers\ViewHelper.cs" />
     <Compile Include="Views\JourneyView.cs" />
     <Compile Include="ViewModels\JourneyViewModel.cs" />
+    <Compile Include="Models\DirectionRequest.cs" />
+    <Compile Include="Models\BorderCrossing.cs" />
+    <Compile Include="Views\BorderCrossingView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

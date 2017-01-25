@@ -48,22 +48,23 @@ namespace iTrip
 
             BivouacTags = new List<string>()
             {
-                "Electricité",
-                "Eau potable",
-                "Eau non potable",
-                "Internet / Wifi",
-                "Dump",
-                "Dump sauvage",
-                "Douches froides",
-                "Douches chaudes",
-                "Sanitaire",
-                "Gaz",
-                "Table",
                 "BBC",
-                "Laverie",
+                "Bel environnement",
+                "Bon accueil",
                 "Commerces",
-                "Restauration",
+                "Douches chaudes",
+                "Douches froides",
+                "Dump",
+                "Eau non potable",
+                "Eau potable",
+                "Electricité",
+                "Gaz",
+                "Internet / Wifi",
+                "Laverie",
                 "Piscine",
+                "Restauration",
+                "Sanitaires",
+                "Table",
                 "Telephone"
             };
 
@@ -71,8 +72,12 @@ namespace iTrip
                 "-- Type --",
                 "Alimentation: Nourriture",
                 "Alimentation: Restaurant",
-                "Communication: Téléphonie",
                 "Communication: Internet",
+                "Communication: Téléphonie",
+                "Logistique: Dump",
+                "Logistique: Laverie",
+                "Logistique: Plein d'eau",
+                "Logistique: Retrait Argent",
                 "Nuitée: Bivouac",
                 "Nuitée: Camping",
                 "Nuitée: Hôtel",
@@ -80,6 +85,8 @@ namespace iTrip
                 "Santé: Hôpital",
                 "Santé: Médecin",
                 "Santé: Pharmacie",
+                "Shopping: Divers",
+                "Shopping: Marché / Mall",
                 "Taxe / Visa",
                 "Transport: Avion",
                 "Transport: Ferrie / Bateau",
@@ -89,8 +96,10 @@ namespace iTrip
                 "Véhicule: Assurance",
                 "Véhicule: Carburant",
                 "Véhicule: Entretien / Révision",
-                "Véhicule: Taxe / Import",
-                "Véhicule: Réparation"
+                "Véhicule: Gaz",
+                "Véhicule: Pneumatiques",
+                "Véhicule: Réparation",
+                "Véhicule: Taxe / Import"
             };
 
             #region Countries
@@ -283,8 +292,11 @@ namespace iTrip
             EventTypes = new List<string>() {
                 "-- Type --",
                 "Divers: Autre",
+                "Divers: Passage frontière",
                 "Divers: Rencontre autres Voyageurs",
+                "Divers: Waypoint",
                 "Divertissement: Loisirs",
+                "Divertissement: Parc d'Attractions",
                 "Divertissement: Spectacle",
                 "Divertissement: Sport",
                 "Divertissement: Zoo",
@@ -292,16 +304,8 @@ namespace iTrip
                 "Incident: Contravention",
                 "Incident: Contrôle Police",
                 "Incident: Panne",
-                "Incident: Problème de santé",
                 "Incident: Pot-de-Vin refusé",
-                "Logistique: Dump",
-                "Logistique: Plein d'eau",
-                "Logistique: Retrait Argent",
-                "Logistique: Laverie",
-                "Logistique: Plein de Gaz",
-                "Divers: Waypoint",
-                "Divers: Passage frontière",
-                "Shopping: Marché / Mall",
+                "Incident: Problème de santé",
                 "Site Culturel: Architecture",
                 "Site Culturel: Autre",
                 "Site Culturel: Métier / Artisanat",
@@ -310,13 +314,12 @@ namespace iTrip
                 "Site Culturel: Ville",
                 "Site Naturel: Animaux observés",
                 "Site Naturel: Autre",
-                "Divertissement: Parc d'Attraction",
                 "Site Naturel: Parc d'Etat",
                 "Site Naturel: Parc Municipal",
                 "Site Naturel: Parc National",
-                "Site Naturel: Réserve",
                 "Site Naturel: Plongée",
-                "Site Naturel: Randonnée"
+                "Site Naturel: Randonnée",
+                "Site Naturel: Réserve"
             };
             WeatherKinds = new List<string>() {
                 "-- Weather --",

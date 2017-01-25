@@ -31,14 +31,20 @@ namespace iTrip
 
         public List<string> GetWayPoints()
         {
-            List<string> waypoints = new List<string>();
-            foreach (var item in Journey.Events.OrderBy(x => x.Order).Where(x => x.HasValidCoordinates))
+            List<KeyValuePair<int, string>> waypoints = new List<KeyValuePair<int, string>>();
+            foreach (var item in Journey.Events.Where(x => MapHelper.IsValidCoordinates(x.Coordinates)))
             {
-                waypoints.Add(item.GoogleCoordinates);
+                waypoints.Add(new KeyValuePair<int, string>(item.Order, item.Coordinates));
             }
-            if (Journey.Bivouac.HasValidCoordinates) { waypoints.Add(Journey.Bivouac.GoogleCoordinates); }
+            foreach (var item in Journey.Spendings.Where(x => MapHelper.IsValidCoordinates(x.Coordinates)))
+            {
+                waypoints.Add(new KeyValuePair<int, string>(item.Order, item.Coordinates));
+            }
 
-            return waypoints;
+            List<string> orderedWaypoints = waypoints.OrderBy(x => x.Key).Select(x => x.Value).ToList();
+            if (MapHelper.IsValidCoordinates(Journey.Bivouac.Coordinates)) { orderedWaypoints.Add(Journey.Bivouac.Coordinates); }
+
+            return orderedWaypoints;
         }
 
         public string GoogleMapParameters
@@ -49,9 +55,12 @@ namespace iTrip
         public Event SelectedEvent { get; set; }
         public Spending SelectedSpending { get; set; }
 
+        public bool HasSelectedEvent { get { return SelectedEvent != null; } }
+        public bool HasSelectedSpending { get { return SelectedSpending != null; } }
+
         public void AddEvent()
         {
-            Journey.Events.Add(new Event(Journey.Events.Count() + 1));
+            Journey.Events.Add(new Event(Journey.Events.Count() + 1, Journey?.Bivouac?.Country));
         }
 
         public void DeleteEvent()
@@ -64,7 +73,7 @@ namespace iTrip
 
         public void AddSpending()
         {
-            Journey.Spendings.Add(new Spending());
+            Journey.Spendings.Add(new Spending(Journey.Spendings.Count() + 1));
         }
 
         public void DeleteSpending()
