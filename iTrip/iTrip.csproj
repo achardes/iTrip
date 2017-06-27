@@ -76,6 +76,7 @@
     <Compile Include="Models\DirectionRequest.cs" />
     <Compile Include="Models\BorderCrossing.cs" />
     <Compile Include="Views\BorderCrossingView.cs" />
+    <Compile Include="Views\ReportingView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

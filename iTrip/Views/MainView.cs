@@ -125,23 +125,25 @@ namespace iTrip
             var addExpenseCommand = new Command { MenuText = "Add Expense", Image = Icon.FromResource("iTrip.Images.AddExpenseIcon.png"), ToolBarText = "Add Event" };
             addExpenseCommand.Executed += (sender, e) => MainViewModel.SelectedJourney?.AddSpending();
 
-            var displayMapCommand = new Command { MenuText = "DisplayMap", ToolBarText = "DisplayMap" };
+            var displayMapCommand = new Command { MenuText = "Map", ToolBarText = "Map" };
             displayMapCommand.Executed += (sender, e) => DisplayMap();
 
-
+            var displayReporting = new Command { MenuText = "Reporting", ToolBarText = "Reporting" };
+            displayReporting.Executed += (sender, e) => DisplaySummary();
 
             //var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
             //quitCommand.Executed += (sender, e) => Quit();
 
             var aboutCommand = new Command { MenuText = "About..." };
-            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "About my app...");
+            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "iTrip v1.1");
 
             // create menu
             Menu = new MenuBar
             {
                 Items = {
 					// File submenu
-                    new ButtonMenuItem { Text = "&File", Items = { addJourneyCommand, saveJourneyCommand, addEventCommand, addExpenseCommand, displayMapCommand } }
+                    new ButtonMenuItem { Text = "&File", Items = { addJourneyCommand, saveJourneyCommand, addEventCommand, addExpenseCommand } },
+                    new ButtonMenuItem { Text = "&View", Items = { displayMapCommand, displayReporting } }
 					// new ButtonMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
 					// new ButtonMenuItem { Text = "&View", Items = { /* commands/items */ } },
 				},
@@ -164,6 +166,25 @@ namespace iTrip
             layout.Rows.Add(new TableRow(new Panel() { Height = 1, BackgroundColor = Color.FromArgb(12, 12, 12) }){ ScaleHeight = false });
             layout.Rows.Add(new TableRow(new Label() { Text = "Ready", TextColor = Color.FromArgb(215, 125, 69) }){ ScaleHeight = true });
             return layout;
+        }
+
+        private void DisplaySummary()
+        {
+            Dialog summaryWindow = new Dialog();
+            summaryWindow.Height = 500;
+            summaryWindow.Width = 600;
+
+
+            Control reporting = ReportingView.GetView(JourneyList.SelectedItems.ToList().OrderBy(x => x.Journey.FromDateTime).ToList());
+
+            Button closeButton = new Button();
+            closeButton.Text = "Close";
+            closeButton.Click += (sender, e) => summaryWindow.Close();
+
+
+            summaryWindow.Content = ViewHelper.AppendV(reporting, ViewHelper.AppendV(null, ViewHelper.AppendH(null, closeButton, null), null));
+            summaryWindow.DisplayMode = DialogDisplayMode.Attached;
+            summaryWindow.ShowModal(this);
         }
 
         private void DisplayMap()

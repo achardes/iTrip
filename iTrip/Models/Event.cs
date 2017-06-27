@@ -30,6 +30,19 @@ namespace iTrip
         public string City { get; set; }
         public string Country { get; set; }
 
+        public double GetPrice()
+        {
+            try
+            {
+                double price = Convert.ToDouble(Price);
+                return price;
+            }
+            catch (Exception ex)
+            {
+                return 0.0;
+            }
+        }
+
         public Event(int order, string country)
         {
             Order = order;

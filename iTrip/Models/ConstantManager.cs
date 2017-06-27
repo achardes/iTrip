@@ -23,6 +23,8 @@ namespace iTrip
             }
         }
 
+
+        public int InitialTraveledDistance = 10060;
         public List<ListItem> Notes { get; set; }
         public List<string> BivouacTags { get; set; }
         public List<string> SpendingTypes { get; set; }

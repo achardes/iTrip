@@ -1,29 +1,21 @@
 ﻿<Properties StartupConfiguration="{8D53369F-69A7-4812-837B-5945AA0C855B}|Default" GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.ItemProperties.iTrip.XamMac PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip/Models/Event.cs">
+  <MonoDevelop.Ide.ItemProperties.iTrip.XamMac PreferredExecutionTarget="Test1" />
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="iTrip/Helpers/MapHelper.cs" Line="30" Column="56" />
-      <File FileName="iTrip/Views/JourneyView.cs" Line="99" Column="57" />
-      <File FileName="iTrip/Views/BivouacView.cs" Line="83" Column="1" />
-      <File FileName="iTrip/Helpers/ViewHelper.cs" Line="14" Column="45" />
+      <File FileName="iTrip/Views/MainView.cs" Line="137" Column="70" />
+      <File FileName="iTrip/Views/JourneyView.cs" Line="81" Column="10" />
+      <File FileName="iTrip/Views/EventListView.cs" Line="13" Column="6" />
       <File FileName="iTrip.XamMac2/Program.cs" Line="27" Column="1" />
-      <File FileName="iTrip/Models/Journey.cs" Line="73" Column="69" />
-      <File FileName="iTrip/Models/Bivouac.cs" Line="14" Column="5" />
-      <File FileName="iTrip/Models/Spending.cs" Line="64" Column="30" />
-      <File FileName="iTrip/Helpers/Converters.cs" Line="6" Column="30" />
-      <File FileName="iTrip/Views/EventListView.cs" Line="112" Column="1" />
-      <File FileName="iTrip/Models/Event.cs" Line="54" Column="33" />
-      <File FileName="iTrip/ViewModels/JourneyViewModel.cs" Line="68" Column="39" />
-      <File FileName="iTrip/Helpers/RelayCommand.cs" Line="1" Column="1" />
-      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="49" Column="1" />
-      <File FileName="iTrip/Views/MainView.cs" Line="172" Column="86" />
+      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="53" Column="61" />
+      <File FileName="iTrip/Helpers/ViewHelper.cs" Line="43" Column="31" />
+      <File FileName="iTrip/Views/ReportingView.cs" Line="47" Column="113" />
       <File FileName="iTrip/Views/SpendingListView.cs" Line="64" Column="33" />
-      <File FileName="iTrip/Helpers/DataContext.cs" Line="18" Column="13" />
-      <File FileName="iTrip/WebFiles/googleMap.html" Line="195" Column="4" />
-      <File FileName="iTrip/Models/DirectionRequest.cs" Line="28" Column="14" />
-      <File FileName="iTrip/Models/BorderCrossing.cs" Line="79" Column="1" />
-      <File FileName="iTrip/Views/BorderCrossingView.cs" Line="97" Column="88" />
-      <File FileName="iTrip/Models/ConstantManager.cs" Line="80" Column="46" />
+      <File FileName="iTrip/Models/ConstantManager.cs" Line="27" Column="52" />
+      <File FileName="iTrip.Wpf/Program.cs" Line="12" Column="52" />
+      <File FileName="iTrip/FodyWeavers.xml" Line="4" Column="11" />
+      <File FileName="iTrip/Models/Journey.cs" Line="1" Column="1" />
+      <File FileName="iTrip/Models/Event.cs" Line="33" Column="1" />
+      <File FileName="iTrip/Models/Spending.cs" Line="57" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -31,5 +23,8 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.iTrip.Wpf PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <DisabledProjects>
+    <String>iTrip.Wpf/iTrip.Wpf.csproj</String>
+  </DisabledProjects>
 </Properties>

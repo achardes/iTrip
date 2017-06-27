@@ -45,6 +45,19 @@ namespace iTrip
             Coordinates = other.Coordinates;
         }
 
+        public double GetPrice()
+        {
+        	try
+        	{
+        		double price = Convert.ToDouble(Price);
+        		return price;
+        	}
+        	catch (Exception ex)
+        	{
+                return 0.0;
+            }
+        }
+
         public bool Equals(Spending other)
         {
             if (Type != other.Type) { return false; }

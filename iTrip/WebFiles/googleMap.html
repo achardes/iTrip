@@ -22,7 +22,6 @@
 		var elevatorService;
     	var directionsDisplay;
 		var directionsService;
-		var lastResponse;
 		var textFile = null;
 		var geoJsonPath = [];
 		var map;
@@ -51,7 +50,7 @@
 			clearMap();
 			var totalWayPoints = [];
 			
-			for (i=0;i<directionRequests.length;i++) {
+			for (var i=0;i<directionRequests.length;i++) {
 
 				totalWayPoints.push(getLatLngFromStr(directionRequests[i].StartPoint));
 				totalWayPoints.push(getLatLngFromStr(directionRequests[i].EndPoint));
@@ -81,7 +80,7 @@
 				});
 			}
 
-			for (i=0;i<totalWayPoints.length;i++) {
+			for (var i=0;i<totalWayPoints.length;i++) {
 		        var marker = new google.maps.Marker({
 		          position: totalWayPoints[i],
 		          map: map,
@@ -107,7 +106,7 @@
 
 		function getStrFromLatLng(latLng)
 		{
-			return "{" + latLng.lat + ", " + latLng.lng + "}";
+			return "[" + latLng.lng + ", " + latLng.lat + "]";
 		}
 
 		function getLatLngFromStr(str)
@@ -131,7 +130,7 @@
 
 			var bounds = new google.maps.LatLngBounds();
 
-			for (i=0;i<geoJsonPath.length;i++) {
+			for (var i=0;i<geoJsonPath.length;i++) {
 				bounds.extend(geoJsonPath[i]);
 			}
 
@@ -142,7 +141,7 @@
  		function addGeoJson(response)
 		{
 			var points = response.routes[0].overview_path;
-			for (i=0;i<points.length;i++) {
+			for (var i=0;i<points.length;i++) {
 				geoJsonPath.push({lat: points[i].lat(), lng: points[i].lng()});
 			}
 		}
@@ -152,7 +151,7 @@
 
 			var latLngStrArray = [];
 			
-			for (i=0;i<geoJsonPath.length;i++) {
+			for (var i=0;i<geoJsonPath.length;i++) {
 				latLngStrArray.push(getStrFromLatLng(geoJsonPath[i]));
 			}
 			
@@ -185,12 +184,13 @@
 		function clearMap()
 		{
 			if(lastPolyline) { lastPolyline.setMap(null); }
-			for (i=0;i<lastMarkers.length;i++) 
+			for (var i=0;i<lastMarkers.length;i++) 
 			{
 				lastMarkers[i].setMap(null);
 			}
 			lastPolyline = null;
 			lastMarkers = [];
+			geoJsonPath = [];
 		}
 			
     </script>
