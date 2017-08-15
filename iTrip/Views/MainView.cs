@@ -25,7 +25,10 @@ namespace iTrip
             mongoDbProcessInfo.FileName = "/usr/local/Cellar/mongodb/3.4.0/bin/mongod";
             mongoDbProcessInfo.Arguments = "--config /usr/local/etc/mongod.conf";
 
-            mongoDbProcessInfo.UseShellExecute = false;
+			//mongoDbProcessInfo.FileName = "/opt/local/bin/mongod";
+			//mongoDbProcessInfo.Arguments = "--config /usr/local/etc/mongod.conf";
+
+			mongoDbProcessInfo.UseShellExecute = false;
             mongoDbProcessInfo.CreateNoWindow = true;
             mongoDbProcess = Process.Start(mongoDbProcessInfo);
             //p.WaitForExit();
@@ -135,7 +138,7 @@ namespace iTrip
             //quitCommand.Executed += (sender, e) => Quit();
 
             var aboutCommand = new Command { MenuText = "About..." };
-            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "iTrip v1.1");
+            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "iTrip v1.2");
 
             // create menu
             Menu = new MenuBar

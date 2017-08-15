@@ -17,6 +17,9 @@ namespace iTrip
             TabPage weatherPage = new TabPage(GetWeatherPage(journeys));
             weatherPage.Text = "Weather";
 
+			TabPage bivouacPage = new TabPage(GetBivouacPage(journeys));
+			bivouacPage.Text = "Bivouac";
+
             TabPage eventPage = new TabPage(GetEventPage(journeys));
             eventPage.Text = "Event";
 
@@ -24,7 +27,8 @@ namespace iTrip
             spendingPage.Text = "Expenses";
 
             tabControl.Pages.Add(mainPage);
-            tabControl.Pages.Add(weatherPage);
+			tabControl.Pages.Add(weatherPage);
+			tabControl.Pages.Add(bivouacPage);
             tabControl.Pages.Add(eventPage);
             tabControl.Pages.Add(spendingPage);
 
@@ -68,6 +72,21 @@ namespace iTrip
             grid.Columns.Add(new GridColumn { DataCell = new TextBoxCell { Binding = Binding.Property<KeyValuePair<string, string>, string>(r => r.Value) }, HeaderText = "Percentage" });
             return grid;
         }
+
+		public static Control GetBivouacPage(List<JourneyViewModel> journeys)
+		{
+			List<object> measures = new List<object>();
+
+            foreach (var type in ConstantManager.Instance.BivouacTypes)
+			{
+                measures.Add(new KeyValuePair<string, string>(type, ((Convert.ToDouble(journeys.Count(x => x.Journey.Bivouac.Type == type)) / Convert.ToDouble(journeys.Count)) * 100) + "%"));
+			}
+
+			var grid = new GridView { DataStore = measures, Height = 400 };
+			grid.Columns.Add(new GridColumn { DataCell = new TextBoxCell { Binding = Binding.Property<KeyValuePair<string, string>, string>(r => r.Key) }, HeaderText = "Name" });
+			grid.Columns.Add(new GridColumn { DataCell = new TextBoxCell { Binding = Binding.Property<KeyValuePair<string, string>, string>(r => r.Value) }, HeaderText = "Percentage" });
+			return grid;
+		}
 
         public static Control GetEventPage(List<JourneyViewModel> journeys)
         {

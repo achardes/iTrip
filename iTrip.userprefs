@@ -1,21 +1,11 @@
 ﻿<Properties StartupConfiguration="{8D53369F-69A7-4812-837B-5945AA0C855B}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.ItemProperties.iTrip.XamMac PreferredExecutionTarget="Test1" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip Status">
     <Files>
-      <File FileName="iTrip/Views/MainView.cs" Line="137" Column="70" />
-      <File FileName="iTrip/Views/JourneyView.cs" Line="81" Column="10" />
-      <File FileName="iTrip/Views/EventListView.cs" Line="13" Column="6" />
-      <File FileName="iTrip.XamMac2/Program.cs" Line="27" Column="1" />
-      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="53" Column="61" />
-      <File FileName="iTrip/Helpers/ViewHelper.cs" Line="43" Column="31" />
-      <File FileName="iTrip/Views/ReportingView.cs" Line="47" Column="113" />
-      <File FileName="iTrip/Views/SpendingListView.cs" Line="64" Column="33" />
-      <File FileName="iTrip/Models/ConstantManager.cs" Line="27" Column="52" />
-      <File FileName="iTrip.Wpf/Program.cs" Line="12" Column="52" />
-      <File FileName="iTrip/FodyWeavers.xml" Line="4" Column="11" />
-      <File FileName="iTrip/Models/Journey.cs" Line="1" Column="1" />
-      <File FileName="iTrip/Models/Event.cs" Line="33" Column="1" />
-      <File FileName="iTrip/Models/Spending.cs" Line="57" Column="28" />
+      <File FileName="iTrip/Helpers/DataContext.cs" Line="1" Column="1" />
+      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="53" Column="29" />
+      <File FileName="iTrip/Views/MainView.cs" Line="141" Column="86" />
+      <File FileName="iTrip Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
