@@ -138,7 +138,7 @@ namespace iTrip
             //quitCommand.Executed += (sender, e) => Quit();
 
             var aboutCommand = new Command { MenuText = "About..." };
-            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "iTrip v1.2");
+            aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "iTrip v1.5");
 
             // create menu
             Menu = new MenuBar

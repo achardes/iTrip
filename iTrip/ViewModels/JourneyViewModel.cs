@@ -17,14 +17,30 @@ namespace iTrip
 
         public string Text { get { return Journey.ShortDisplayName; } }
 
-        public string TextDescription { get { return Journey.ShortDisplayName + " " + Journey.Bivouac.Country + " " + Journey.Bivouac.City; } }
+        public string TextDescription 
+        { 
+            get 
+            {
+                List<string> fullDesc = new List<string>();
+				fullDesc.Add(Journey.ShortDisplayName);
+				fullDesc.Add(Journey.Bivouac.Country);
+				fullDesc.Add(Journey.Bivouac.City);
+                fullDesc.Add(Journey.Bivouac.Comments);
 
-        public Control Content { get; set; }
+				Journey.Events.ToList().ForEach(x => fullDesc.Add(x.Comments));
+                Journey.Spendings.ToList().ForEach(x => fullDesc.Add(x.Comments));
+
+                return string.Join(" ", fullDesc);
+            } 
+        }
+
+        private Control content = null;
+        public Control Content { get { if(content == null) { content = JourneyView.GetView(this); } return content; } }
 
         public JourneyViewModel(Journey journey)
         {
             Journey = journey;
-            Content = JourneyView.GetView(this);
+            //Content = JourneyView.GetView(this);
 
             Journey.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(Text)); };
         }

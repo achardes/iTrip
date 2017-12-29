@@ -46,8 +46,17 @@ namespace iTrip
 
             grid.Columns.Add(new GridColumn
             {
-                DataCell = new TextBoxCell { Binding = Binding.Property<Event, string>(r => r.Price) },
+                DataCell = new TextBoxCell { Binding = Binding.Property<Spending, double>(r => r.Price).Convert(r => r.ToString(), v => Converters.FromStringToDouble(v)) },
                 HeaderText = "Price",
+                Editable = true,
+                Resizable = true,
+                Sortable = true
+            });
+
+            grid.Columns.Add(new GridColumn
+            {
+                DataCell = new TextBoxCell { Binding = Binding.Property<Spending, double>(r => r.Euro).Convert(r => r.ToString(), v => Converters.FromStringToDouble(v)) },
+                HeaderText = "Euro",
                 Editable = true,
                 Resizable = true,
                 Sortable = true

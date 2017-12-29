@@ -22,7 +22,8 @@ namespace iTrip
         public string Type { get; set; }
         public string Note { get; set; }
         public int Distance { get; set; }
-        public int DistanceTrack { get; set; }
+		public int DistanceTrack { get; set; }
+		public int Walk { get; set; }
         public bool Photo { get; set; }
         public int WakeUpTemperature { get; set; }
         public string Comments { get; set; }
@@ -58,7 +59,8 @@ namespace iTrip
             Type = other.Type;
             Comments = other.Comments;
             Distance = other.Distance;
-            DistanceTrack = other.DistanceTrack;
+			DistanceTrack = other.DistanceTrack;
+            Walk = other.Walk;
             WakeUpTemperature = other.WakeUpTemperature;
             Photo = other.Photo;
 
@@ -76,7 +78,8 @@ namespace iTrip
             if (Type != other.Type) { return false; }
             if (Note != other.Note) { return false; }
             if (Distance != other.Distance) { return false; }
-            if (DistanceTrack != other.DistanceTrack) { return false; }
+			if (DistanceTrack != other.DistanceTrack) { return false; }
+			if (Walk != other.Walk) { return false; }
             if (Comments != other.Comments) { return false; }
             if (Coordinates != other.Coordinates) { return false; }
             if (Elevation != other.Elevation) { return false; }

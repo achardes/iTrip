@@ -20,6 +20,8 @@ namespace iTrip
         public string Type { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
+        public double Euro { get; set; }
+        public double UnitaryPrice { get; set; }
         public string Coordinates { get; set; }
         public string Comments { get; set; }
  
@@ -29,6 +31,8 @@ namespace iTrip
             Type = ConstantManager.Instance.BivouacTypes.First();
             Quantity = 0;
             Price = 0;
+            Euro = 0;
+            UnitaryPrice = 0;
             Comments = string.Empty;
             Coordinates = string.Empty;
 
@@ -41,21 +45,10 @@ namespace iTrip
             Type = other.Type;
             Quantity = other.Quantity;
             Price = other.Price;
+            Euro = other.Euro;
+            UnitaryPrice = other.UnitaryPrice;
             Comments = other.Comments;
             Coordinates = other.Coordinates;
-        }
-
-        public double GetPrice()
-        {
-        	try
-        	{
-        		double price = Convert.ToDouble(Price);
-        		return price;
-        	}
-        	catch (Exception ex)
-        	{
-                return 0.0;
-            }
         }
 
         public bool Equals(Spending other)
@@ -64,6 +57,8 @@ namespace iTrip
             if (Order != other.Order) { return false; }
             if (Quantity != other.Quantity) { return false; }
             if (Price != other.Price) { return false; }
+            if (Euro != other.Euro) { return false; }
+            if (UnitaryPrice != other.UnitaryPrice) { return false; }
             if (Comments != other.Comments) { return false; }
             if (Coordinates != other.Coordinates) { return false; }
 

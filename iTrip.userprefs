@@ -1,11 +1,27 @@
 ﻿<Properties StartupConfiguration="{8D53369F-69A7-4812-837B-5945AA0C855B}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.ItemProperties.iTrip.XamMac PreferredExecutionTarget="Test1" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="iTrip/Views/MainView.cs">
     <Files>
       <File FileName="iTrip/Helpers/DataContext.cs" Line="1" Column="1" />
-      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="53" Column="29" />
-      <File FileName="iTrip/Views/MainView.cs" Line="141" Column="86" />
-      <File FileName="iTrip Status" />
+      <File FileName="iTrip/ViewModels/MainViewModel.cs" Line="61" Column="10" />
+      <File FileName="iTrip/Views/MainView.cs" Line="127" Column="13" />
+      <File FileName="iTrip/ViewModels/JourneyViewModel.cs" Line="44" Column="13" />
+      <File FileName="iTrip/Models/Journey.cs" Line="47" Column="60" />
+      <File FileName="iTrip/Views/JourneyView.cs" Line="22" Column="70" />
+      <File FileName="iTrip/Views/ReportingView.cs" Line="203" Column="83" />
+      <File FileName="iTrip/Models/ConstantManager.cs" Line="97" Column="29" />
+      <File FileName="iTrip/Views/BivouacView.cs" Line="64" Column="39" />
+      <File FileName="iTrip/Models/Bivouac.cs" Line="150" Column="25" />
+      <File FileName="iTrip/Views/EventListView.cs" Line="51" Column="33" />
+      <File FileName="iTrip/Helpers/ViewHelper.cs" Line="8" Column="71" />
+      <File FileName="iTrip/Models/Event.cs" Line="33" Column="9" />
+      <File FileName="iTrip/Models/Spending.cs" Line="67" Column="9" />
+      <File FileName="iTrip/Views/SpendingListView.cs" Line="47" Column="1" />
+      <File FileName="iTrip.XamMac2/Program.cs" Line="27" Column="1" />
+      <File FileName="iTrip/Models/BorderCrossing.cs" Line="1" Column="1" />
+      <File FileName="iTrip/Models/DirectionRequest.cs" Line="1" Column="1" />
+      <File FileName="iTrip/packages.config" Line="1" Column="1" />
+      <File FileName="iTrip/FodyWeavers.xml" Line="4" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

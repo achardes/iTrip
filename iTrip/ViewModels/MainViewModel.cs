@@ -48,7 +48,9 @@ namespace iTrip
             IMongoCollection<Journey> collection = database.GetCollection<Journey>("journeys");
             List<Journey> journeysFromDatabase = collection.Find(x => true).ToListAsync().Result;
 
-            foreach (var journey in journeysFromDatabase.OrderByDescending(x => x.FromDateTime))
+            List<Journey> journeysFromDatabaseOrdered = journeysFromDatabase.OrderByDescending(x => x.FromDateTime).ToList();
+
+            foreach (var journey in journeysFromDatabaseOrdered)
             {
                 Journeys.Add(new JourneyViewModel(journey));
             }
@@ -58,11 +60,12 @@ namespace iTrip
 
         }
 
+
         public void Add(DateTime fromDateTime, DateTime toDateTime)
         {
             Journey journey = new Journey(fromDateTime.Date.AddHours(12).ToUniversalTime(), toDateTime.Date.AddHours(12).ToUniversalTime());
             JourneyViewModel journeyViewModel = new JourneyViewModel(journey);
-            Journeys.Add(journeyViewModel);
+            Journeys.Insert(0, journeyViewModel);
             journey.Save();
             UpdateApplicationBadge();
             SelectedJourney = journeyViewModel;

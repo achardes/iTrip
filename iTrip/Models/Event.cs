@@ -19,7 +19,8 @@ namespace iTrip
         public int Order { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
+        public double Euro { get; set; }
         public string Note { get; set; }
         public string Duration { get; set; }
         public string Comments { get; set; }
@@ -30,25 +31,14 @@ namespace iTrip
         public string City { get; set; }
         public string Country { get; set; }
 
-        public double GetPrice()
-        {
-            try
-            {
-                double price = Convert.ToDouble(Price);
-                return price;
-            }
-            catch (Exception ex)
-            {
-                return 0.0;
-            }
-        }
 
         public Event(int order, string country)
         {
             Order = order;
             Name = "New Event";
             Duration = "0";
-            Price = "0";
+            Price = 0;
+            Euro = 0;
             Comments = "";
             Type = ConstantManager.Instance.BivouacTypes.First();
             Note = "2";
@@ -69,6 +59,7 @@ namespace iTrip
             Name = other.Name;
             Duration = other.Duration;
             Price = other.Price;
+            Euro = other.Euro;
             Comments = other.Comments;
             Type = other.Type;
             Note = other.Note;
@@ -86,6 +77,7 @@ namespace iTrip
             if (Name != other.Name) { return false; }
             if (Type != other.Type) { return false; }
             if (Price != other.Price) { return false; }
+            if (Euro != other.Euro) { return false; }
             if (Note != other.Note) { return false; }
             if (Duration != other.Duration) { return false; }
             if (Comments != other.Comments) { return false; }
