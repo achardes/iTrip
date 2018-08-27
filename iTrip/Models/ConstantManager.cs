@@ -294,11 +294,10 @@ namespace iTrip
             #endregion
 
             EventTypes = new List<string>() {
-                "-- Type --",
+                "Divers: Waypoint",
                 "Divers: Autre",
                 "Divers: Passage frontière",
                 "Divers: Rencontre autres Voyageurs",
-                "Divers: Waypoint",
                 "Divertissement: Loisirs",
                 "Divertissement: Parc d'Attractions",
                 "Divertissement: Spectacle",

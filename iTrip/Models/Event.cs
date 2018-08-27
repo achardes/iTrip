@@ -40,7 +40,7 @@ namespace iTrip
             Price = 0;
             Euro = 0;
             Comments = "";
-            Type = ConstantManager.Instance.BivouacTypes.First();
+            Type = ConstantManager.Instance.EventTypes.First();
             Note = "2";
 
             Coordinates = string.Empty;
