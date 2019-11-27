@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>iTrip.XamMac2</RootNamespace>
     <AssemblyName>iTrip</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
+    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,11 +29,15 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <PlatformTarget>x86</PlatformTarget>
+    <AOTMode>None</AOTMode>
+    <ExternalConsole>false</ExternalConsole>
+    <RunWithWarnings>true</RunWithWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>__UNIFIED__;__MACOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>true</EnableCodeSigning>
@@ -44,20 +49,27 @@
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>None</LinkMode>
     <PlatformTarget>x86</PlatformTarget>
+    <AOTMode>None</AOTMode>
+    <Commandlineparameters></Commandlineparameters>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Eto">
-      <HintPath>..\packages\Eto.Forms.2.3.0\lib\net45\Eto.dll</HintPath>
+      <HintPath>..\packages\Eto.Forms.2.4.1\lib\netstandard1.0\Eto.dll</HintPath>
     </Reference>
     <Reference Include="Eto.XamMac2">
-      <HintPath>..\packages\Eto.Platform.XamMac2.2.3.0\lib\net45\Eto.XamMac2.dll</HintPath>
+      <HintPath>..\packages\Eto.Platform.XamMac2.2.4.1\lib\net45\Eto.XamMac2.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives">
+      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -80,4 +92,6 @@
     <Content Include="ITripIcon.icns" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="..\packages\Eto.Forms.2.4.1\build\Eto.Forms.targets" Condition="Exists('..\packages\Eto.Forms.2.4.1\build\Eto.Forms.targets')" />
+  <Import Project="..\packages\Eto.Platform.XamMac2.2.4.1\build\Eto.Platform.XamMac2.targets" Condition="Exists('..\packages\Eto.Platform.XamMac2.2.4.1\build\Eto.Platform.XamMac2.targets')" />
 </Project>

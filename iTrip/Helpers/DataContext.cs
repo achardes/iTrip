@@ -14,7 +14,7 @@ namespace iTrip
 
         public static IMongoDatabase GetMongoDatabase(string databaseName)
         {
-            string MongoDbServer = "mongodb://localhost:27017";
+            string MongoDbServer = "mongodb://127.0.0.1:27017";
 
             IMongoClient client = new MongoClient(MongoDbServer);
             IMongoDatabase database = client.GetDatabase(databaseName);

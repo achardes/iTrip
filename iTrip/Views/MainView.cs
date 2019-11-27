@@ -22,7 +22,7 @@ namespace iTrip
         public MainView()
         {
             ProcessStartInfo mongoDbProcessInfo = new ProcessStartInfo();
-            mongoDbProcessInfo.FileName = "/usr/local/Cellar/mongodb/3.4.0/bin/mongod";
+            mongoDbProcessInfo.FileName = "/usr/local/Cellar/mongodb-community/4.2.1/bin/mongod";
             mongoDbProcessInfo.Arguments = "--config /usr/local/etc/mongod.conf";
 
 			//mongoDbProcessInfo.FileName = "/opt/local/bin/mongod";
@@ -206,19 +206,16 @@ namespace iTrip
             webView.Size = new Size(800, 500);
             //webView.LoadComplete += (sender, e) => ((WebView)sender).ExecuteScript(script);
 
-            Button loadButton = new Button();
-            loadButton.Text = "Load";
-            loadButton.Click += (sender, e) => webView.ExecuteScript(script);
-
-            Button exportButton = new Button();
-            exportButton.Text = "Export";
-            exportButton.Click += (sender, e) => webView.ExecuteScript("displayLastResponse()");
-
             Button closeButton = new Button();
             closeButton.Text = "Close";
             closeButton.Click += (sender, e) => mapWindow.Close();
 
-            mapWindow.Content = ViewHelper.AppendV(webView, ViewHelper.AppendH(loadButton, exportButton, closeButton, null));
+            TextArea textArea = new TextArea();
+            textArea.Text = jsonDirectionRequests;
+            textArea.Size = new Size(800, 500);
+
+
+            mapWindow.Content = ViewHelper.AppendV(textArea, closeButton);
             mapWindow.DisplayMode = DialogDisplayMode.Attached;
             mapWindow.ShowModal(this);
             

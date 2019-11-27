@@ -43,27 +43,27 @@ namespace iTrip
             coordinatesTextBox.BindDataContext(c => c.Text, (Bivouac m) => m.Coordinates);
             coordinatesTextBox.Tag = "Lat, Long";
 
-            NumericUpDown elevationNumericUpDown = new NumericUpDown();
+            NumericStepper elevationNumericUpDown = new NumericStepper();
             elevationNumericUpDown.DataContext = bivouac;
             elevationNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Elevation);
             elevationNumericUpDown.Tag = "Height (m)";
 
-            NumericUpDown distanceNumericUpDown = new NumericUpDown();
+            NumericStepper distanceNumericUpDown = new NumericStepper();
             distanceNumericUpDown.DataContext = bivouac;
             distanceNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Distance);
             distanceNumericUpDown.Tag = "Total (km)";
 
-            NumericUpDown distanceTrackNumericUpDown = new NumericUpDown();
+            NumericStepper distanceTrackNumericUpDown = new NumericStepper();
             distanceTrackNumericUpDown.DataContext = bivouac;
             distanceTrackNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.DistanceTrack);
             distanceTrackNumericUpDown.Tag = "Track (km)";
 
-			NumericUpDown walkNumericUpDown = new NumericUpDown();
-			walkNumericUpDown.DataContext = bivouac;
+            NumericStepper walkNumericUpDown = new NumericStepper();
+            walkNumericUpDown.DataContext = bivouac;
             walkNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.Walk);
-			walkNumericUpDown.Tag = "Walk (m)";
+            walkNumericUpDown.Tag = "Walk (m)";
 
-            NumericUpDown wakeUpTemperatureNumericUpDown = new NumericUpDown();
+            NumericStepper wakeUpTemperatureNumericUpDown = new NumericStepper();
             wakeUpTemperatureNumericUpDown.DataContext = bivouac;
             wakeUpTemperatureNumericUpDown.BindDataContext(c => c.Value, (Bivouac m) => m.WakeUpTemperature);
             wakeUpTemperatureNumericUpDown.Tag = "Wake T (C°)";
@@ -109,11 +109,12 @@ namespace iTrip
 
             var infoColumn = ViewHelper.AppendV(
                 ViewHelper.AppendH(ViewHelper.Labelize(typeDropDown), ViewHelper.Labelize(addressTextBox)),
-                ViewHelper.AppendH(ViewHelper.Labelize(noteDropDown), ViewHelper.Labelize(cityTextBox)),
+                ViewHelper.AppendH(ViewHelper.Labelize(noteDropDown), ViewHelper.Labelize(cityTextBox), ViewHelper.Labelize(elevationNumericUpDown)),
                 ViewHelper.AppendH(ViewHelper.Labelize(wakeUpTemperatureNumericUpDown), ViewHelper.Labelize(countryDropDown)),
                 ViewHelper.AppendH(ViewHelper.Labelize(distanceNumericUpDown), ViewHelper.Labelize(coordinatesTextBox)),
                 ViewHelper.AppendH(ViewHelper.Labelize(distanceTrackNumericUpDown), ViewHelper.Labelize(elevationNumericUpDown)),
-                ViewHelper.AppendH(ViewHelper.Labelize(walkNumericUpDown), ViewHelper.Labelize(photoCheckBox, 42), ViewHelper.Labelize(fromiOverLanderCheckBox, 79), ViewHelper.Labelize(toiOverLanderCheckBox, 49)));
+                ViewHelper.AppendH(ViewHelper.Labelize(walkNumericUpDown), ViewHelper.Labelize(photoCheckBox, 42), ViewHelper.Labelize(fromiOverLanderCheckBox, 79), ViewHelper.Labelize(toiOverLanderCheckBox, 49))
+             );
 
             return new GroupBox() { Padding = 5, Content = ViewHelper.AppendH(infoColumn, tagsGrid, new Label() { Width = 20 }, commentTextArea), Text = "Bivouac"};
         }

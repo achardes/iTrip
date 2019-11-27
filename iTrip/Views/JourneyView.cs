@@ -38,7 +38,7 @@ namespace iTrip
 
                     var jsonDirectionRequests = JsonConvert.SerializeObject(directionRequests);
                     string script = "calculateAndDisplayRoute(" + jsonDirectionRequests + ");";
-
+                    Console.WriteLine(script);
                     webView.ExecuteScript(script);
                 }
             };
@@ -56,7 +56,7 @@ namespace iTrip
                 ViewHelper.AppendH(
                     ViewHelper.AppendV(
                         ViewHelper.AppendH(
-                            GetWeatherDropDown(journeyViewModel.Journey), 
+                            GetWeatherDropDown(journeyViewModel.Journey),
                             GetNoteSlider(journeyViewModel.Journey),
                             GetIncludeBorderCrossing(journeyViewModel.Journey),
                             null
@@ -67,7 +67,7 @@ namespace iTrip
                 tabControl
             ) as TableLayout;
             layout.Padding = new Padding(10, 0, 10, 10);
-            layout.BackgroundColor = Colors.White;
+            //layout.BackgroundColor = Colors.White;
 
             return layout;
         }
@@ -135,7 +135,7 @@ namespace iTrip
             noteDropDown.DataContext = journey;
             noteDropDown.DataStore = ConstantManager.Instance.Notes;
             noteDropDown.BindDataContext(c => c.SelectedKey, (Journey m) => m.Note);
-            //noteDropDown.TextColor = Colors.Gold;
+            noteDropDown.TextColor = Colors.Gold;
             noteDropDown.Tag = "Note";
 
 

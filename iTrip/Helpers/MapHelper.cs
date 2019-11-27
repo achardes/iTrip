@@ -12,7 +12,7 @@ namespace iTrip
         public static Uri GoogleMapUrl()
         {
             string curDir = Directory.GetCurrentDirectory();
-            return new Uri(String.Format("{0}/googleMap.html", curDir));
+            return new Uri(string.Format("{0}/googleMap.html", curDir));
         }
 
         public static List<DirectionRequest> GetDirectionRequests(List<string> wayPoints)
@@ -46,7 +46,6 @@ namespace iTrip
 
                 directionRequests.Add(new DirectionRequest(directionRequestPoints));
             }
-
             return directionRequests;
         }
 
@@ -76,7 +75,7 @@ namespace iTrip
             {
                 str = "calculateAndDisplayRoute(" + str + ")";
             }
-
+            Console.WriteLine(str);
             return str;
         }
 

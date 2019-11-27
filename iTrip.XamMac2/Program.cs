@@ -14,9 +14,9 @@ namespace iTrip.XamMac2
         [STAThread]
         public static void Main(string[] args)
         {
-            AddStyles();
+            //AddStyles();
 
-            var platform = new Eto.Mac.Platform();
+            //var platform = new Eto.Mac.Platform();
 
             //var platform = Platforms.XamMac2; // mac platform
 
@@ -36,10 +36,10 @@ namespace iTrip.XamMac2
                 {
                     //handler.Control.CollectionBehavior |= NSWindowCollectionBehavior.FullScreenPrimary;
                     ////handler.Control.Appearance = NSAppearance.GetAppearance(NSAppearance.NameVibrantDark);
-                    handler.Control.TitleVisibility = NSWindowTitleVisibility.Hidden;
-                    handler.Control.TitlebarAppearsTransparent = true;
-                    handler.Control.StyleMask |= NSWindowStyle.FullSizeContentView;
-                    handler.Control.BackgroundColor = NSColor.White;
+                    //handler.Control.TitleVisibility = NSWindowTitleVisibility.Hidden;
+                    //handler.Control.TitlebarAppearsTransparent = true;
+                    //handler.Control.StyleMask |= NSWindowStyle.FullSizeContentView;
+                    //handler.Control.BackgroundColor = NSColor.White;
                 });
 
             Style.Add<ApplicationHandler>("application", handler =>
@@ -60,9 +60,9 @@ namespace iTrip.XamMac2
             // other styles
             Style.Add<GridViewHandler>("journeyList", handler =>
                 {
-                    handler.ScrollView.BorderType = NSBorderType.NoBorder;
-                    handler.Control.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
-                    handler.Control.BackgroundColor = NSColor.White;
+                    //handler.ScrollView.BorderType = NSBorderType.NoBorder;
+                    //handler.Control.SelectionHighlightStyle = NSTableViewSelectionHighlightStyle.SourceList;
+                    //handler.Control.BackgroundColor = NSColor.White;
                 });
 
             Style.Add<ToolBarHandler>(null, handler =>
